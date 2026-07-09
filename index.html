@@ -79,24 +79,9 @@
   .mv-meta-item span { display: block; color: var(--accent); font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.3rem; }
 
   /* Track grid - 12 tracks, 3 col */
-  .track-grid { display: block; }
-  .track-grid-inner { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 3rem; }
   .track-group-label { font-size: 0.62rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.2rem; display: flex; align-items: center; gap: 1rem; }
   .track-group-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
   .track-group-label.album { color: var(--accent2); margin-top: 1rem; }
-    .track-head { cursor: pointer; }
-  .track-player { grid-column: 1 / -1; }
-  .track-player iframe { margin-top: 1rem; }
-  .track-card.playing { background: rgba(200,169,110,0.06); }
-  .track-card { background: var(--surface); padding: 1.6rem; transition: background 0.2s; cursor: pointer; position: relative; overflow: hidden; }
-  .track-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(200,169,110,0.05), transparent); opacity: 0; transition: opacity 0.3s; }
-  .track-card:hover { background: var(--surface2); }
-  .track-card:hover::before { opacity: 1; }
-  .track-card.album-track { background: var(--ink2); }
-  .track-card.album-track:hover { background: var(--surface); }
-  .track-card.album-track .track-num { color: rgba(139,111,212,0.12); }
-  .track-num { font-size: 2.5rem; font-weight: 900; color: rgba(255,255,255,0.04); line-height: 1; margin-bottom: 0.8rem; font-family: 'Bebas Neue', sans-serif; }
-  .track-name { font-family: 'Shippori Mincho', serif; font-size: 1.1rem; font-weight: 700; }
 
   /* Lyrics */
   .lyrics-section { background: var(--surface); }
@@ -115,6 +100,7 @@
   .lyrics-tab.album.active { border-color: var(--accent2); color: var(--accent2); }
   .lyrics-tab.album.active .tab-dot { background: var(--accent2); }
   .lyrics-song-title { font-family: 'Shippori Mincho', serif; font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
+  .lyrics-player { margin: 1rem 0 1.2rem; }
   .lyrics-meta-info { color: var(--muted); font-size: 0.75rem; letter-spacing: 0.1em; margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
   .lyrics-body { font-family: 'Noto Serif JP', serif; font-size: 1.05rem; line-height: 2.4; white-space: pre-line; }
   .lyrics-body .chorus { color: var(--accent); }
@@ -201,16 +187,14 @@
 
   @media (max-width: 900px) {
     nav { padding: 1rem 1.2rem; } .nav-links { gap: 1rem; margin-right: 6.2rem; } .lang-switcher { right: 1.2rem; }
-    .container { padding: 0 1.5rem; } .mv-featured { grid-template-columns: 1fr; }
-    .track-grid-inner { grid-template-columns: 1fr 1fr; } .lyrics-layout { grid-template-columns: 1fr; gap: 3rem; }
+    .container { padding: 0 1.5rem; } .mv-featured { grid-template-columns: 1fr; } .lyrics-layout { grid-template-columns: 1fr; gap: 3rem; }
     .concept-grid { grid-template-columns: 1fr; gap: 3rem; } .streaming-grid { grid-template-columns: repeat(2, 1fr); }
     .profile-layout { grid-template-columns: 1fr; gap: 3rem; } .profile-visual { position: static; }
     footer { flex-direction: column; gap: 1rem; text-align: center; }
     .signup-form { flex-direction: column; } .signup-input { border-right: 1px solid var(--border); border-bottom: none; }
     .signup-mini-inner { flex-direction: column; text-align: center; } .signup-mini-form { flex-direction: column; width: 100%; } .signup-mini-input { border-right: 1px solid var(--border); }
   }
-  @media (max-width: 600px) {
-    .track-grid-inner { grid-template-columns: 1fr; } .concept-visual { grid-template-columns: 1fr; }
+  @media (max-width: 600px) { .concept-visual { grid-template-columns: 1fr; }
     .profile-stats { grid-template-columns: 1fr 1fr; } .streaming-grid { grid-template-columns: 1fr 1fr; }
   }
 </style>
@@ -288,7 +272,6 @@
         </div>
       </div>
     </div>
-    <div class="track-grid reveal" id="trackGrid"></div>
   </div>
 </section>
 
@@ -300,6 +283,7 @@
       <div class="lyrics-selector" id="lyricsSelector"></div>
       <div>
         <div class="lyrics-song-title" id="lyricsSongTitle">愛とAI</div>
+        <div class="lyrics-player" id="lyricsPlayer"></div>
         <div class="lyrics-meta-info" id="lyricsMeta">Music & Lyrics: 社畜のめぐみ / AI assisted</div>
         <div class="lyrics-body" id="lyricsBody"></div>
       </div>
@@ -561,78 +545,14 @@ function setLang(l) {
   document.getElementById('stat-lang-sub').textContent = t.statLangSub;
   document.getElementById('stat-since').textContent = t.statSince;
   document.getElementById('stat-powered').textContent = t.statPowered;
-  // Rebuild tracks & lyrics
-  buildTracks();
+  // Rebuild lyrics
   buildLyrics();
   showLyrics(currentTrack);
 }
 
 // Track grid - main tracks + album-only
-function buildTracks() {
-  const grid = document.getElementById('trackGrid');
-  const names = trackNames.ja; // タイトルは言語に関わらず常に日本語表示
-  grid.innerHTML = '';
 
-  const mainLabel = lang === 'ja' ? 'シングル / 主要曲' : 'Singles / Main Tracks';
-  const albumLabel = lang === 'ja' ? 'アルバム収録曲' : 'Album-Only Tracks';
 
-  // メイン曲ヘッダー
-  const mh = document.createElement('div');
-  mh.className = 'track-group-label';
-  mh.textContent = mainLabel;
-  grid.appendChild(mh);
-
-  const mainWrap = document.createElement('div');
-  mainWrap.className = 'track-grid-inner';
-  for (let i = 0; i < ALBUM_ONLY_START; i++) {
-    mainWrap.appendChild(makeTrackCard(i, names[i]));
-  }
-  grid.appendChild(mainWrap);
-
-  // アルバム収録曲ヘッダー
-  const ah = document.createElement('div');
-  ah.className = 'track-group-label album';
-  ah.textContent = albumLabel;
-  grid.appendChild(ah);
-
-  const albumWrap = document.createElement('div');
-  albumWrap.className = 'track-grid-inner';
-  for (let i = ALBUM_ONLY_START; i < names.length; i++) {
-    albumWrap.appendChild(makeTrackCard(i, names[i], true));
-  }
-  grid.appendChild(albumWrap);
-}
-
-function makeTrackCard(i, name, isAlbum) {
-  const card = document.createElement('div');
-  card.className = 'track-card' + (isAlbum ? ' album-track' : '');
-  const num = (i+1) < 10 ? '0'+(i+1) : (i+1);
-  card.innerHTML = `<div class="track-head"><div class="track-num">${num}</div><div class="track-name">${name}</div></div><div class="track-player"></div>`;
-  card.querySelector('.track-head').addEventListener('click', () => toggleTrackPlayer(card, i));
-  return card;
-}
-
-let openTrackCard = null;
-function toggleTrackPlayer(card, i) {
-  const slot = card.querySelector('.track-player');
-  // 既に開いているカードをもう一度押したら閉じる
-  if (openTrackCard === card) {
-    slot.innerHTML = '';
-    card.classList.remove('playing');
-    openTrackCard = null;
-    return;
-  }
-  // 他のカードが開いていたら閉じる
-  if (openTrackCard) {
-    openTrackCard.querySelector('.track-player').innerHTML = '';
-    openTrackCard.classList.remove('playing');
-  }
-  const id = spotifyTracks[i];
-  if (!id) return;
-  slot.innerHTML = `<iframe src="https://open.spotify.com/embed/track/${id}?utm_source=generator&theme=0" style="width:100%;height:152px;border:none;border-radius:12px;display:block;" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Spotify player"></iframe>`;
-  card.classList.add('playing');
-  openTrackCard = card;
-}
 
 // Lyrics tabs
 let userPickedTrack = false;
@@ -665,6 +585,9 @@ function buildLyrics() {
 }
 
 function showLyrics(idx) {
+  const pl = document.getElementById('lyricsPlayer');
+  const sid = spotifyTracks[idx];
+  pl.innerHTML = sid ? `<iframe src="https://open.spotify.com/embed/track/${sid}?utm_source=generator&theme=0" style="width:100%;max-width:560px;height:152px;border:none;border-radius:12px;display:block;" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Spotify player"></iframe>` : '';
   const t = lyricsData[idx] || lyricsData[0];
   document.getElementById('lyricsSongTitle').textContent = t.title;
   document.getElementById('lyricsMeta').textContent = t.meta;
@@ -729,7 +652,6 @@ function goToSignup() {
 }
 
 // Init
-buildTracks();
 buildLyrics();
 showLyrics(0);
 
