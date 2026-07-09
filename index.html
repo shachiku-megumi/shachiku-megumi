@@ -364,7 +364,7 @@
     <div class="profile-layout reveal">
       <div class="profile-visual">
         <div class="profile-avatar">
-          <img class="artist-photo" src="artist.jpg" alt="社畜のめぐみ">
+          <img class="artist-photo" src="artist.jpeg" alt="社畜のめぐみ">
           <div class="profile-corner"></div>
         </div>
         <div class="social-links">
@@ -607,7 +607,7 @@ function makeTrackCard(i, name, isAlbum) {
   card.className = 'track-card' + (isAlbum ? ' album-track' : '');
   const num = (i+1) < 10 ? '0'+(i+1) : (i+1);
   card.innerHTML = `<div class="track-num">${num}</div><div class="track-name">${name}</div><div class="track-player"></div>`;
-  card.addEventListener('click', () => toggleTrackPlayer(card, i));
+  card.addEventListener('click', (e) => { if (e.target.closest('.track-player')) return; toggleTrackPlayer(card, i); });
   return card;
 }
 
