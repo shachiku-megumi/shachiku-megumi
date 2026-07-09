@@ -84,7 +84,8 @@
   .track-group-label { font-size: 0.62rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.2rem; display: flex; align-items: center; gap: 1rem; }
   .track-group-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
   .track-group-label.album { color: var(--accent2); margin-top: 1rem; }
-    .track-player { grid-column: 1 / -1; }
+    .track-head { cursor: pointer; }
+  .track-player { grid-column: 1 / -1; }
   .track-player iframe { margin-top: 1rem; }
   .track-card.playing { background: rgba(200,169,110,0.06); }
   .track-card { background: var(--surface); padding: 1.6rem; transition: background 0.2s; cursor: pointer; position: relative; overflow: hidden; }
@@ -606,8 +607,8 @@ function makeTrackCard(i, name, isAlbum) {
   const card = document.createElement('div');
   card.className = 'track-card' + (isAlbum ? ' album-track' : '');
   const num = (i+1) < 10 ? '0'+(i+1) : (i+1);
-  card.innerHTML = `<div class="track-num">${num}</div><div class="track-name">${name}</div><div class="track-player"></div>`;
-  card.addEventListener('click', (e) => { if (e.target.closest('.track-player')) return; toggleTrackPlayer(card, i); });
+  card.innerHTML = `<div class="track-head"><div class="track-num">${num}</div><div class="track-name">${name}</div></div><div class="track-player"></div>`;
+  card.querySelector('.track-head').addEventListener('click', () => toggleTrackPlayer(card, i));
   return card;
 }
 
