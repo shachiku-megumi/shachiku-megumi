@@ -27,9 +27,11 @@
   .lang-btn:hover:not(.active) { color: var(--accent); }
 
   /* Nav */
-  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 4rem; background: linear-gradient(to bottom, rgba(10,10,18,0.95), transparent); }
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 4rem; background: rgba(10,10,18,0.92); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid rgba(200,169,110,0.12); }
   .nav-logo { font-family: 'Shippori Mincho', serif; font-size: 1.1rem; font-weight: 800; letter-spacing: 0.2em; color: var(--accent); text-decoration: none; }
-  .nav-links { display: flex; gap: 2rem; list-style: none; margin-right: 9rem; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; margin-right: 9rem; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
+  .nav-links::-webkit-scrollbar { display: none; }
+  .nav-links a { white-space: nowrap; }
   .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; transition: color 0.2s; }
   .nav-links a:hover { color: var(--accent); }
 
@@ -124,7 +126,7 @@
   .concept-body { color: var(--muted); font-size: 0.88rem; line-height: 2.2; }
   .concept-visual { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); }
   .concept-tile { background: var(--surface); padding: 2.5rem 2rem; text-align: center; }
-  .concept-tile-icon { font-size: 2rem; margin-bottom: 1rem; }
+  .concept-tile-icon { font-family: 'Shippori Mincho', serif; font-size: 2.2rem; color: var(--accent); line-height: 1; margin-bottom: 1rem; }
   .concept-tile-strong { display: block; color: var(--text); font-family: 'Shippori Mincho', serif; font-size: 1.1rem; margin-bottom: 0.3rem; font-weight: 700; }
   .concept-tile-sub { display: block; color: var(--muted); font-size: 0.82rem; line-height: 1.6; }
 
@@ -183,7 +185,7 @@
   .profile-bio { color: var(--muted); font-size: 0.88rem; line-height: 2.4; margin-bottom: 3rem; }
   .profile-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); margin-bottom: 3rem; }
   .stat-item { background: var(--surface); padding: 1.5rem; text-align: center; }
-  .stat-num { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--accent); letter-spacing: 0.05em; }
+  .stat-num { font-family: 'Shippori Mincho', serif; font-weight: 800; font-size: 1.8rem; color: var(--accent); letter-spacing: 0.05em; }
   .stat-sub { font-size: 0.55rem; color: var(--muted); letter-spacing: 0.08em; margin-top: 0.25rem; }
   .stat-label { font-size: 0.65rem; color: var(--muted); letter-spacing: 0.2em; text-transform: uppercase; margin-top: 0.3rem; }
   .profile-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
@@ -197,7 +199,7 @@
   .reveal.visible { opacity: 1; transform: translateY(0); }
 
   @media (max-width: 900px) {
-    nav { padding: 1rem 1.5rem; } .nav-links { gap: 1.2rem; margin-right: 7rem; } .lang-switcher { right: 1.5rem; }
+    nav { padding: 1rem 1.2rem; } .nav-links { gap: 1rem; margin-right: 6.2rem; } .lang-switcher { right: 1.2rem; }
     .container { padding: 0 1.5rem; } .mv-featured { grid-template-columns: 1fr; }
     .track-grid-inner { grid-template-columns: 1fr 1fr; } .lyrics-layout { grid-template-columns: 1fr; gap: 3rem; }
     .concept-grid { grid-template-columns: 1fr; gap: 3rem; } .streaming-grid { grid-template-columns: repeat(2, 1fr); }
@@ -314,10 +316,10 @@
         <p class="concept-body" id="concept-body">社畜のめぐみは、日本のサラリーマン文化（"社畜"）とAIの共存をテーマに、笑いと切なさの狭間を音楽で表現するアーティストです。<br><br>職場のリアル、AIへの依存、人間らしさへの問い——そのすべてが楽曲に宿っています。<br><br>Instagram・YouTube・TikTok を通じて発信し続ける「社畜のめぐみ」ブランドは、AI音楽・AI映像・コンテンツ制作の実験場でもあります。</p>
       </div>
       <div class="concept-visual">
-        <div class="concept-tile"><div class="concept-tile-icon">🤖</div><span class="concept-tile-strong" id="tile1-strong">AI × 音楽</span><span class="concept-tile-sub" id="tile1-sub">最先端ツールで生み出す独自サウンド</span></div>
-        <div class="concept-tile"><div class="concept-tile-icon">⛩</div><span class="concept-tile-strong" id="tile2-strong">日本の現代</span><span class="concept-tile-sub" id="tile2-sub">社畜文化をテーマにした世界観</span></div>
-        <div class="concept-tile"><div class="concept-tile-icon">👾</div><span class="concept-tile-strong" id="tile3-strong">デジタル叛逆</span><span class="concept-tile-sub" id="tile3-sub">アンドロイドと人間の境界線</span></div>
-        <div class="concept-tile"><div class="concept-tile-icon">🎌</div><span class="concept-tile-strong" id="tile4-strong">日本発・世界へ</span><span class="concept-tile-sub" id="tile4-sub">サラリーマンの叫びを世界に届ける</span></div>
+        <div class="concept-tile"><div class="concept-tile-icon">音</div><span class="concept-tile-strong" id="tile1-strong">AI × 音楽</span><span class="concept-tile-sub" id="tile1-sub">最先端ツールで生み出す独自サウンド</span></div>
+        <div class="concept-tile"><div class="concept-tile-icon">畜</div><span class="concept-tile-strong" id="tile2-strong">日本の現代</span><span class="concept-tile-sub" id="tile2-sub">社畜文化をテーマにした世界観</span></div>
+        <div class="concept-tile"><div class="concept-tile-icon">叛</div><span class="concept-tile-strong" id="tile3-strong">デジタル叛逆</span><span class="concept-tile-sub" id="tile3-sub">アンドロイドと人間の境界線</span></div>
+        <div class="concept-tile"><div class="concept-tile-icon">叫</div><span class="concept-tile-strong" id="tile4-strong">日本発・世界へ</span><span class="concept-tile-sub" id="tile4-sub">サラリーマンの叫びを世界に届ける</span></div>
       </div>
     </div>
   </div>
@@ -366,9 +368,9 @@
           <div class="profile-corner"></div>
         </div>
         <div class="social-links">
-          <a href="https://www.threads.net/" class="social-link" target="_blank">Threads</a>
-          <a href="https://www.instagram.com/" class="social-link" target="_blank">Instagram</a>
-          <a href="https://farcaster.xyz/" class="social-link" target="_blank">Farcaster</a>
+          <a href="https://www.instagram.com/shachiku_megumi" class="social-link" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://youtube.com/@shachiku_megumi" class="social-link" target="_blank" rel="noopener">YouTube</a>
+          <a href="https://www.tiktok.com/@shachiku_megumi" class="social-link" target="_blank" rel="noopener">TikTok</a>
         </div>
       </div>
       <div>
@@ -379,11 +381,11 @@
           <div class="stat-item"><div class="stat-num">12</div><div class="stat-label" id="stat-tracks">楽曲</div></div>
           <div class="stat-item"><div class="stat-num">3</div><div class="stat-label" id="stat-lang">言語</div><div class="stat-sub" id="stat-lang-sub">日 / 英 / Romaji</div></div>
           <div class="stat-item"><div class="stat-num">2025.12</div><div class="stat-label" id="stat-since">始動</div></div>
-          <div class="stat-item"><div class="stat-num">AI×人間</div><div class="stat-label" id="stat-powered">制作</div></div>
+          <div class="stat-item"><div class="stat-num">AI+人</div><div class="stat-label" id="stat-powered">制作</div></div>
         </div>
         <div class="profile-tags">
-          <span class="tag">AI Music</span><span class="tag">社畜 / Shachiku</span><span class="tag">AI Video</span>
-          <span class="tag">Generative Art</span><span class="tag">Veo / Midjourney</span><span class="tag">Higgsfield</span>
+          <span class="tag">社畜 / Shachiku</span><span class="tag">Dark Hip-Hop</span><span class="tag">Corporate Horror</span>
+          <span class="tag">百鬼夜行</span><span class="tag">AI×人間 / AI×Human</span>
         </div>
       </div>
     </div>
@@ -392,7 +394,7 @@
 
 <footer>
   <div class="footer-logo">社畜のめぐみ</div>
-  <div class="footer-copy" id="footer-copy">© 2024–2025 社畜のめぐみ / Shachiku no Megumin. All rights reserved.</div>
+  <div class="footer-copy" id="footer-copy">© 2025–<span id="copy-year">2026</span> 社畜のめぐみ / Shachiku no Megumin. All rights reserved.</div>
 </footer>
 
 <script>
@@ -486,13 +488,13 @@ const spotifyTracks = [
   '4vyYVIFZiA0bXgF6xLy1eU', // 03 吠声
   '0eNOklc0rqjtufIKgemmeO', // 04 斂鬱
   '60XkIQ2sBWriwoDAUxW8Rx', // 05 呪文
-  '1sL3u997zQwbawRMxjHCDM', // 06 無能
-  '4Hx18ux7fSl51nATv5Iz67', // 07 磐石
-  '3qZXAszHWzWFrE2HkLJNTn', // 08 上機嫌
+  '3DpwVBuxHecBvyL8UtAeQJ', // 06 愛とAI
+  '1sL3u997zQwbawRMxjHCDM', // 07 無能
+  '4Hx18ux7fSl51nATv5Iz67', // 08 磐石
   '25DHA7o5ApPoLfR9bsBCHD', // 09 表アカ
   '6E5op8hF3TKpaxEcI2utXY', // 10 野暮
-  '3DpwVBuxHecBvyL8UtAeQJ', // 11 愛とAI
-  '2wHDyircJiujF3owqr8zxT', // 12 残像
+  '2wHDyircJiujF3owqr8zxT', // 11 残像
+  '3qZXAszHWzWFrE2HkLJNTn', // 12 上機嫌
 ];
 const trackNames = {
   ja: ['社畜','逼迫','吠声','斂鬱','呪文','愛とAI','無能','磐石','表アカ','野暮','残像','上機嫌'],
@@ -729,6 +731,14 @@ function goToSignup() {
 buildTracks();
 buildLyrics();
 showLyrics(0);
+
+// 著作権年の自動更新（2025年始動、翌年以降は現在年まで表示）
+(function(){
+  const y = new Date().getFullYear();
+  const el = document.getElementById('copy-year');
+  if (el && y >= 2026) el.textContent = y;
+  if (el && y <= 2025) el.parentNode.childNodes[0].textContent = '© 2025';
+})();
 </script>
 <canvas id="cursorDust" style="position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:9000;"></canvas>
 <script>
