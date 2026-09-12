@@ -259,13 +259,13 @@
     <h2 class="section-title reveal" id="mv-title">楽曲 & MV</h2>
     <div class="mv-featured reveal">
       <div class="mv-placeholder" id="mvMain" style="padding:0;min-height:300px;">
-        <iframe src="https://www.youtube.com/embed/J5X_GnJ09ps" title="吠声" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width:100%;height:100%;border:none;display:block;min-height:300px;"></iframe>
+        <iframe src="https://www.youtube.com/embed/76gagyrLV0U" title="無礼講" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width:100%;height:100%;border:none;display:block;min-height:300px;"></iframe>
       </div>
       <div class="mv-info">
         <div>
           <div class="mv-tag" id="mv-tag">注目MV</div>
-          <h3 class="mv-title-text">吠声</h3>
-          <p class="mv-desc" id="mv-desc">変わるものを間違いと呼び、挑む者を嗤う群れの声。吠えるだけの正義が渦巻く夜の闇、それでも浮世は流れていく——夜が進んでいることに、群れは気づかない。</p>
+          <h3 class="mv-title-text">無礼講</h3>
+          <p class="mv-desc" id="mv-desc">「今日は無礼講だ」と言いながら、誰も正座を崩さない。注がれた盃と一緒に本音を呑み込む夜——無礼講という名の礼儀、その底へ沈んでいく。</p>
         </div>
         <div class="mv-meta">
           <div class="mv-meta-item"><span id="mv-release-label">リリース</span>2026</div>
@@ -366,7 +366,7 @@
         <div class="profile-name-en">Shachiku no Megumin</div>
         <p class="profile-bio" id="profile-bio">社畜のめぐみは、AIで楽曲とMVを生み出すクリエイター。働くことの息苦しさ、群れに飲まれる怖さ、夜の孤独——誰もが見て見ぬふりをするものを、音楽にして突きつける。<br><br>代表曲「愛とAI」は、AIへの依存と人間らしさを問う作品として注目を集めている。AI音楽・AI映像制作の最前線で実験を続けながら、日々新しい表現を追い求めている。</p>
         <div class="profile-stats">
-          <div class="stat-item"><div class="stat-num">14</div><div class="stat-label" id="stat-tracks">楽曲</div></div>
+          <div class="stat-item"><div class="stat-num" id="stat-count">14</div><div class="stat-label" id="stat-tracks">楽曲</div></div>
           <div class="stat-item"><div class="stat-num">3</div><div class="stat-label" id="stat-lang">言語</div><div class="stat-sub" id="stat-lang-sub">日 / 英 / Romaji</div></div>
           <div class="stat-item"><div class="stat-num">2025.12</div><div class="stat-label" id="stat-since">始動</div></div>
           <div class="stat-item"><div class="stat-num">AI+人</div><div class="stat-label" id="stat-powered">制作</div></div>
@@ -392,7 +392,7 @@ const i18n = {
     navMusic:'音楽', navLyrics:'歌詞', navConcept:'世界観', navStreaming:'配信', navProfile:'アーティスト',
     heroSub:'AIと音楽と、社畜の叫び。', heroCta:'音楽を聴く', heroGhost:'世界観を知る',
     mvTitle:'楽曲 & MV', mvTag:'注目MV', mvHint:'YouTube URLをお知らせください',
-    mvDesc:'変わるものを間違いと呼び、挑む者を嗤う群れの声。吠えるだけの正義が渦巻く夜の闇、それでも浮世は流れていく——夜が進んでいることに、群れは気づかない。',
+    mvDesc:'「今日は無礼講だ」と言いながら、誰も正座を崩さない。注がれた盃と一緒に本音を呑み込む夜——無礼講という名の礼儀、その底へ沈んでいく。',
     mvReleaseLabel:'リリース', mvProdLabel:'制作',
     lyricsTitle:'歌詞',
     conceptTitle:'世界観',
@@ -418,7 +418,7 @@ const i18n = {
     navMusic:'Music', navLyrics:'Lyrics', navConcept:'World', navStreaming:'Listen', navProfile:'Artist',
     heroSub:'AI, music, and the cry of the corporate slave.', heroCta:'Listen Now', heroGhost:'Explore the World',
     mvTitle:'Music & MV', mvTag:'Featured MV', mvHint:'YouTube URL coming soon',
-    mvDesc:'Voices of the crowd calling change a mistake, sneering at those who dare. Hollow, barking justice swirls through the dark of night, yet the world keeps flowing — and the crowd never notices the night moving on.',
+    mvDesc:'"No rank tonight," they say — yet no one unfolds their knees. A night of swallowing the truth along with every cup poured — sinking to the bottom of the etiquette they call no rank.',
     mvReleaseLabel:'Release', mvProdLabel:'Production',
     lyricsTitle:'Lyrics',
     conceptTitle:'The World',
@@ -657,6 +657,8 @@ function goToSignup() {
 // Init
 buildLyrics();
 showLyrics(0);
+// 楽曲数は歌詞データから自動計算（新曲追加時に手動更新不要）
+document.getElementById('stat-count').textContent = lyricsData.length;
 
 // 著作権年の自動更新（2025年始動、翌年以降は現在年まで表示）
 (function(){
