@@ -130,6 +130,19 @@
   .streaming-action { font-size: 0.65rem; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; }
 
   /* Signup mini (top) */
+  .news-section { background: var(--ink); padding: 6rem 0; }
+  .news-list { border-top: 1px solid var(--border); }
+  .news-item { display: block; text-decoration: none; color: inherit; border-bottom: 1px solid var(--border); padding: 1.6rem 0.5rem; transition: background 0.2s, padding-left 0.2s; }
+  .news-item:hover { background: var(--surface); padding-left: 1rem; }
+  .news-head { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.6rem; flex-wrap: wrap; }
+  .news-date { font-family: 'Bebas Neue', sans-serif; font-size: 0.85rem; letter-spacing: 0.12em; color: var(--muted); }
+  .news-tag { font-size: 0.58rem; letter-spacing: 0.22em; text-transform: uppercase; padding: 0.25rem 0.7rem; border: 1px solid rgba(200,169,110,0.4); color: var(--accent); }
+  .news-tag.release { border-color: rgba(139,111,212,0.4); color: var(--accent2); }
+  .news-item-title { font-family: 'Shippori Mincho', serif; font-size: 1.05rem; font-weight: 700; line-height: 1.5; margin-bottom: 0.4rem; }
+  .news-item-desc { font-size: 0.82rem; line-height: 1.9; color: var(--muted); }
+  .news-links { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.9rem; }
+  .news-link-btn { font-size: 0.65rem; letter-spacing: 0.12em; padding: 0.4rem 0.9rem; border: 1px solid var(--border); color: var(--muted); text-decoration: none; transition: all 0.2s; }
+  .news-link-btn:hover { border-color: var(--accent); color: var(--accent); }
   .signup-mini { background: linear-gradient(135deg, rgba(139,111,212,0.08), rgba(200,169,110,0.05)), var(--ink2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 3.5rem 0; }
   .signup-mini-inner { max-width: 760px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
   .signup-mini-text { flex: 1; min-width: 220px; }
@@ -214,6 +227,7 @@
 <nav>
   <a href="#" class="nav-logo">社畜のめぐみ</a>
   <ul class="nav-links">
+    <li><a href="#news" id="nav-news">お知らせ</a></li>
     <li><a href="#music" id="nav-music">音楽</a></li>
     <li><a href="#lyrics" id="nav-lyrics">歌詞</a></li>
     <li><a href="#concept" id="nav-concept">世界観</a></li>
@@ -250,6 +264,14 @@
         <button class="signup-mini-btn" id="mini-btn" onclick="goToSignup()">登録する</button>
       </div>
     </div>
+  </div>
+</section>
+
+<section class="news-section" id="news">
+  <div class="container">
+    <div class="section-label reveal">News &amp; Topics</div>
+    <h2 class="section-title reveal" id="news-title">お知らせ</h2>
+    <div class="news-list reveal" id="newsList"></div>
   </div>
 </section>
 
@@ -389,6 +411,7 @@
 // ── i18n ───────────────────────────────────────────────────────
 const i18n = {
   ja: {
+    navNews:'お知らせ', newsTitle:'お知らせ', newsMore:'詳しく見る →',
     navMusic:'音楽', navLyrics:'歌詞', navConcept:'世界観', navStreaming:'配信', navProfile:'アーティスト',
     heroSub:'AIと音楽と、社畜の叫び。', heroCta:'音楽を聴く', heroGhost:'世界観を知る',
     mvTitle:'楽曲 & MV', mvTag:'注目MV', mvHint:'YouTube URLをお知らせください',
@@ -415,6 +438,7 @@ const i18n = {
     alertVideo:'YouTubeのURLをお知らせください！',
   },
   en: {
+    navNews:'News', newsTitle:'News & Topics', newsMore:'Read more →',
     navMusic:'Music', navLyrics:'Lyrics', navConcept:'World', navStreaming:'Listen', navProfile:'Artist',
     heroSub:'AI, music, and the cry of the corporate slave.', heroCta:'Listen Now', heroGhost:'Explore the World',
     mvTitle:'Music & MV', mvTag:'Featured MV', mvHint:'YouTube URL coming soon',
@@ -443,6 +467,67 @@ const i18n = {
 };
 
 // Lyrics data
+// News / Topics
+const newsData = [
+  {
+    date: '2026.10',
+    tag: { ja:'新曲', en:'New Release' },
+    tagClass: 'release',
+    title: { ja:'新曲「焦熱」配信開始', en:'New single "Shōnetsu" out now' },
+    desc: { ja:'各音楽配信サービスにて配信中です。', en:'Available now on all major streaming services.' },
+    links: [
+      { label:'Spotify', url:'https://open.spotify.com/album/0Vv6INWDXcyG8BN2r2KUds' }
+    ]
+  },
+  {
+    date: '2026.09.26',
+    tag: { ja:'放送情報', en:'On Air' },
+    tagClass: '',
+    title: { ja:'日本テレビにて演技の様子が放送されます', en:'Broadcast on Nippon TV' },
+    desc: { ja:'9月26日（土）4:15〜5:45／日本テレビ（関東地域のみ）', en:'Sat, Sept 26, 4:15–5:45 AM — Nippon TV (Kanto region only)' },
+    links: null
+  },
+  {
+    date: '2026.08.30',
+    tag: { ja:'トピックス', en:'Topics' },
+    tagClass: '',
+    title: { ja:'アイスショー「フレンズオンアイス2026」高橋大輔さんの演目に「残像」が使用されました', en:'"Zanzou" used in Daisuke Takahashi\'s program at Friends on Ice 2026' },
+    desc: { ja:'アルバム『社畜の愛』収録のバラード「残像」を、高橋大輔さんの演目でご使用いただきました。ご尽力いただいた関係者の皆様に心より感謝申し上げます。', en:'Our ballad "Zanzou," from the album Shachiku no Ai, was used in his program. Our sincere thanks to everyone who made it possible.' },
+    links: null
+  },
+  {
+    date: '2026.09',
+    tag: { ja:'リリース', en:'Release' },
+    tagClass: 'release',
+    title: { ja:'「残像」各配信サービスにて配信中', en:'"Zanzou" out now on all streaming services' },
+    desc: { ja:'アルバム『社畜の愛』収録。各音楽配信サービスでお聴きいただけます。', en:'From the album Shachiku no Ai. Available on all major streaming services.' },
+    links: [
+      { label:'Spotify', url:'https://open.spotify.com/track/2wHDyircJiujF3owqr8zxT' },
+      { label:'Apple Music', url:'https://music.apple.com/jp/album/%E6%AE%8B%E5%83%8F/6765800567?i=6765800575' },
+      { label:'YouTube', url:'https://youtu.be/YwLfVc5vXBM' }
+    ]
+  },
+];
+
+function buildNews() {
+  const list = document.getElementById('newsList');
+  if (!list) return;
+  list.innerHTML = '';
+  newsData.forEach(n => {
+    const el = document.createElement('div');
+    el.className = 'news-item';
+    el.innerHTML = `
+      <div class="news-head">
+        <span class="news-date">${n.date}</span>
+        <span class="news-tag ${n.tagClass}">${n.tag[lang]}</span>
+      </div>
+      <div class="news-item-title">${n.title[lang]}</div>
+      <div class="news-item-desc">${n.desc[lang]}</div>
+      ${n.links ? `<div class="news-links">${n.links.map(l => `<a class="news-link-btn" href="${l.url}" target="_blank" rel="noopener">${l.label}</a>`).join('')}</div>` : ''}`;
+    list.appendChild(el);
+  });
+}
+
 const lyricsData = [
   { title:'社畜', meta:'Music & Lyrics: 社畜のめぐみ / AI assisted', body:`直立　沈黙　整列\nChokuritsu chinmoku seiretsu\nStanding upright, silent, lined in formation\n\n名もない顔が量産列\nNa mo nai kao ga ryōsan retsu\nNameless faces, mass-produced in rows\n\n<span class="chorus">社畜　社畜　首輪はネクタイ\nShachiku shachiku kubiwa wa nekutai\nCorporate slaves, corporate slaves — ties worn like collars\n\n自由は資料の失注みたい\nJiyū wa shiryō no shicchū mitai\nFreedom is like a rejected proposal</span>\n\n定時は都市伝説\nTeiji wa toshi densetsu\nLeaving work on time is an urban myth\n\n笑顔は業務で提出制\nEgao wa gyōmu de teishutsu-sei\nSmiles are mandatory, officially submitted for work\n\n床に落ちた黒い輪郭\nYuka ni ochita kuroi rinkaku\nA black outline falls onto the floor\n\n俺より先に本音が発火\nOre yori saki ni honne ga hakka\nMy true feelings ignite before I do\n\n無音の部屋　踊る影\nMuon no heya odoru kage\nIn a silent room, the shadow dances\n\n本体だけが置き去りで\nHontai dake ga okizari de\nOnly the real body is left behind\n\n守れルール　越えるな線\nMamore rūru koeru na sen\nFollow the rules. Don't cross the line\n\n壊れたのは　どこだっけ\nKowareta no wa doko dakke\nWhat was it that broke, again?\n\n<span class="chorus">社畜　社畜　哀が鳴る\nShachiku shachiku ai ga naru\nCorporate slaves, corporate slaves — sorrow begins to sound\n\n俺は止まり　影が踊る\nOre wa tomari kage ga odoru\nI stand still while my shadow dances\n\n社畜　社畜　疑の群れ\nShachiku shachiku gi no mure\nCorporate slaves, a swarm of doubt\n\n無音の中で　リズムが噛む\nMuon no naka de rizumu ga kamu\nIn the silence, the rhythm grinds and clashes</span>\n\n「代わりはいくらでもいる」\n"Kawari wa ikura demo iru"\n"There are plenty of replacements."\n\n「気合が足りないだけだろ」\n"Kiai ga tarinai dake daro"\n"You're just not trying hard enough."\n\n「結果がすべて　文句は後」\n"Kekka ga subete monku wa ato"\n"Results are everything. Complaints come later."\n\n「自己責任　察しろよ」\n"Jiko sekinin sasshiro yo"\n"It's your responsibility. Figure it out."\n\nその言葉　床に落ち\nSono kotoba yuka ni ochi\nThose words fall to the floor\n\n影が拾って　牙を研ぐ\nKage ga hirotte kiba o togu\nThe shadow picks them up and sharpens its fangs\n\n声は飲み込む　喉の奥\nKoe wa nomikomu nodo no oku\nI swallow my voice deep in my throat\n\n踊るのは　影の方\nOdoru no wa kage no hō\nThe one that dances is the shadow\n\n止まれ\nTomare\nStop\n\n……\n…\n\n止まってるのは　誰だ\nTomatteru no wa dare da\nBut who is the one truly standing still?\n\n<span class="chorus">社畜　社畜　哀が鳴る\nShachiku shachiku ai ga naru\nCorporate slaves, corporate slaves — sorrow resounds\n\n俺は無音で　影が吠える\nOre wa muon de kage ga hoeru\nI am silent while my shadow howls\n\n社畜　社畜　疑のまま\nShachiku shachiku gi no mama\nCorporate slaves, remaining in doubt\n\n俺が俺に　戻るまで\nOre ga ore ni modoru made\nUntil I return to being myself</span>\n\n照明が落ちる\nShōmei ga ochiru\nThe lights go out\n\n影が消える\nKage ga kieru\nThe shadow disappears\n\n直立の俺だけが　残る\nChokuritsu no ore dake ga nokoru\nOnly me remains, standing upright` },
 
@@ -460,6 +545,8 @@ const lyricsData = [
 
   { title:'磐石', meta:'Music & Lyrics: 社畜のめぐみ / AI assisted', body:`猫を抱きながら泣いてる夜\nNeko o dakinagara naiteru yoru\nA night spent crying while holding a cat\n\n誕生日に一人でケーキ買って\nTanjoubi ni hitori de keeki katte\nBuying a birthday cake alone\n\n既読がつかないまま眠れなくて\nKidoku ga tsukanai mama nemurenakute\nUnable to sleep waiting for a message that never gets read\n\n笑いながら大丈夫って言う\nWarainagara daijoubu tte iu\nSaying "I'm fine" while smiling\n\n終電逃して一人で歩いて\nShuuden nogashite hitori de aruite\nMissing the last train and walking home alone\n\n冷めたご飯を一人で食べて\nSameta gohan o hitori de tabete\nEating cold rice alone\n\nそれでもお前は誰にも言わない\nSoredemo omae wa dare ni mo iwanai\nAnd still you don't tell anyone\n\n強いんじゃなくて　慣れただけだろ\nTsuyoi n ja nakute nareta dake daro\nYou're not strong, you've just gotten used to it\n\n<span class="chorus">大丈夫じゃないのは知ってる\nDaijoubu ja nai no wa shitteru\nI know you're not okay\n\n声くらい出せよ\nKoe kurai dase yo\nAt least make a sound\n\n聞こえてるから\nKikoeteru kara\nBecause I can hear you\n\n俺が行く　待ってろ\nOre ga iku mattero\nI'm coming, wait for me</span>\n\nメッセージ消して また打って\nMesseeji keshite mata utte\nDeleting the message then typing it again\n\n鏡の前で笑う練習して\nKagami no mae de warau renshuu shite\nPracticing smiling in front of the mirror\n\nお疲れ様って言ってくれる人\nOtsukare sama tte itte kureru hito\nSomeone who would say good work today\n\nいないくらい知ってんだよ俺は\nInai kurai shitteru n da yo ore wa\nI know there's no one like that for you\n\n夜中に急に掃除を始めて\nYonaka ni kyuu ni souji o hajimete\nSuddenly starting to clean in the middle of the night\n\n誰かのSNSをこっそり見て\nDareka no SNS o kossori mite\nSecretly checking someone's social media\n\n好きな曲を誰かに教えられなくて\nSuki na kyoku o dareka ni oshierarenakute\nUnable to share your favorite song with anyone\n\n記念日を一人でやり過ごす\nKinenbi o hitori de yarisugosu\nLetting anniversaries pass alone\n\n<span class="chorus">大丈夫じゃないのは知ってる\nDaijoubu ja nai no wa shitteru\nI know you're not okay\n\n声くらい出せよ\nKoe kurai dase yo\nAt least make a sound\n\n聞こえてるから\nKikoeteru kara\nBecause I can hear you\n\n俺が行く　待ってろ\nOre ga iku mattero\nI'm coming, wait for me</span>\n\n毒を吐くなら吐けばいい\nDoku o haku nara hakeba ii\nIf you need to spit out poison, go ahead\n\n汚い言葉も全部聞く\nKitanai kotoba mo zenbu kiku\nI'll listen to every ugly word\n\nそれがお前の本音なら\nSore ga omae no honne nara\nIf that's your true feelings\n\n俺には関係ない　来い\nOre ni wa kankei nai koi\nIt doesn't matter to me, just come\n\n<span class="chorus">大丈夫じゃなくていい\nDaijoubu ja nakute ii\nYou don't have to be okay\n\n世界なんか止まってていい\nSekai nanka tomattete ii\nThe world can stop for all I care\n\nお前のことだけ見てる\nOmae no koto dake miteru\nI'm only looking at you\n\n俺が行く　今すぐ\nOre ga iku ima sugu\nI'm coming, right now</span>` },
   { title:'無礼講', meta:'Music & Lyrics: 社畜のめぐみ / AI assisted', body:`今日は無礼講だと 上座の声が笑う\nKyō wa bureikō da to kamiza no koe ga warau\n"No rank tonight," laughs the voice at the head of the table\n\n緩んだふりして 誰も崩さない正座\nYurunda furi shite dare mo kuzusanai seiza\nPretending to relax, no one unfolds their knees\n\n畳の縁の向こう 越えないままの本音\nTatami no heri no mukō koenai mama no honne\nBeyond the tatami's edge, true words that never cross\n\n背筋伸ばして 今日も笑う練習さ\nSesuji nobashite kyō mo warau renshū sa\nSpine straight, another night of practicing a smile\n\n注がれた盃 断れないまま\nSosogareta sakazuki kotowarenai mama\nA cup poured for me, impossible to refuse\n\n時計回りに 夜は回る 回る\nTokeimawari ni yoru wa mawaru mawaru\nClockwise, the night goes round and round\n\n<span class="chorus">呑め 呑め (呑め 呑め)\nNome nome (nome nome)\nDrink, drink (drink, drink)\n\n注がれた夜を\nSosogareta yoru o\nDrink down the night they poured\n\n呑め 呑め (呑め 呑め)\nNome nome (nome nome)\nDrink, drink (drink, drink)\n\n底まで干せよ\nSoko made hose yo\nDrain it to the bottom\n\nまあまあ まあまあ (まあまあ)\nMāmā māmā (māmā)\nCome now, come now (come now)\n\n俺の酒が呑めないのか\nOre no sake ga nomenai no ka\nYou can't drink what I pour you?\n\n呑め 呑め (呑め 呑め)\nNome nome (nome nome)\nDrink, drink (drink, drink)\n\n底まで 底まで\nSoko made soko made\nTo the bottom, to the bottom</span>\n\n喉まで来てる言葉を 酒と一緒に流す\nNodo made kiteru kotoba o sake to issho ni nagasu\nWords risen to my throat, washed down with the drink\n\n顔は笑って 腹の底は黙ったまま\nKao wa waratte hara no soko wa damatta mama\nMy face laughs while my gut stays silent\n\n隣の席も 同じ顔で同じ嘘を呑んで\nTonari no seki mo onaji kao de onaji uso o nonde\nThe seat beside me swallows the same lie with the same face\n\n言えたら楽になるか 言えないから沈むのさ\nIetara raku ni naru ka ienai kara shizumu no sa\nWould saying it help? I can't, so I sink\n\n言いかけた本音 盃に沈めて\nIikaketa honne sakazuki ni shizumete\nThe truth I almost spoke, sunk into the cup\n\n琥珀の底へ 沈む 沈む\nKohaku no soko e shizumu shizumu\nDown to the amber depths, sinking, sinking\n\n<span class="chorus">呑め 呑め (呑め 呑め)\nNome nome (nome nome)\nDrink, drink (drink, drink)\n\n言いかけた本音を\nIikaketa honne o\nSwallow the truth you almost spoke\n\n呑め 呑め (呑め 呑め)\nNome nome (nome nome)\nDrink, drink (drink, drink)\n\n喉元の怒りを\nNodomoto no ikari o\nSwallow the anger in your throat\n\nまあまあ まあまあ (まあまあ)\nMāmā māmā (māmā)\nCome now, come now (come now)\n\n呑み込んだ分だけ夜が重い\nNomikonda bun dake yoru ga omoi\nThe more I swallow, the heavier the night\n\n呑め 呑め (呑め 呑め)\nNome nome (nome nome)\nDrink, drink (drink, drink)\n\n底まで 底まで\nSoko made soko made\nTo the bottom, to the bottom</span>\n\n盃の底に俺がいるよ\nSakazuki no soko ni ore ga iru yo\nThere I am, at the bottom of the cup\n\n揺れて 歪んで 黙ってるよ\nYurete yugande damatteru yo\nRippling, warped, saying nothing\n\n無礼講という名の礼儀のその底に\nBureikō to iu na no reigi no sono soko ni\nAt the bottom of the etiquette they call "no rank"\n\n俺が沈んでいくよ\nOre ga shizunde iku yo\nI keep sinking down\n\n終電過ぎても宴は終わらない\nShūden sugitemo utage wa owaranai\nPast the last train, the banquet doesn't end\n\n腹の底でまだ揺れてる言葉\nHara no soko de mada yureteru kotoba\nWords still trembling deep in my gut\n\nグラスをあげて ひとこと 乾杯\nGurasu o agete hitokoto kanpai\nI raise my glass, and say one word — cheers\n\n呑め\nNome\nDrink` },
+
+  { title:'焦熱', meta:'Music & Lyrics: 社畜のめぐみ / AI assisted', body:`掌に灯る\ntenohira ni tomoru\nKindled in my palm\n\n火種が籠る\nhidane ga komoru\nAn ember smolders within\n\nもう戻れない\nmou modorenai\nThere's no going back\n\nあなたも逃げられない\nanata mo nigerarenai\nAnd you can't escape either\n\n高きから低きへ\ntakaki kara hikuki e\nFrom high to low\n\n熱は流れて\nnetsu wa nagarete\nHeat keeps flowing\n\n生生流転\nseisei ruten\nBorn, dying, and born again\n\n<span class="chorus">燃やして\nmoyashite\nBurn me\n\n焦がして\nkogashite\nScorch me\n\nあなたの熱で\nanata no netsu de\nWith your heat\n\n私が灰になるまで\nwatashi ga hai ni naru made\nUntil I turn to ash\n\n燃やして\nmoyashite\nBurn me\n\n焦がして\nkogashite\nScorch me\n\nこの身が尽きるまで\nkono mi ga tsukiru made\nUntil this body is spent</span>\n\n同じ温度で重なれば\nonaji ondo de kasanareba\nIf we meet at the same temperature\n\n流れは止まる\nnagare wa tomaru\nThe flow will stop\n\nそれを永遠と呼ぶなら\nsore wo eien to yobu nara\nIf that is what we call forever\n\n燃え移れ\nmoeutsure\nCatch fire\n\n燃え広がれ\nmoehirogare\nSpread the blaze\n\n<span class="chorus">燃やして\nmoyashite\nBurn me\n\n焦がして\nkogashite\nScorch me\n\n私の熱で\nwatashi no netsu de\nWith my heat\n\nあなたも灰になるまで\nanata mo hai ni naru made\nUntil you too turn to ash\n\n燃やして\nmoyashite\nBurn me\n\n焦がして\nkogashite\nScorch me\n\nふたりが尽きるまで\nfutari ga tsukiru made\nUntil we both burn out</span>\n\n灰の奥で\nhai no oku de\nDeep within the ashes\n\nまだ脈打つ\nmada myakuutsu\nStill, a pulse beats` },
 
   { title:'表アカ', album:true, meta:'Music & Lyrics: 社畜のめぐみ / AI assisted', body:`才色兼備　都会遊泳\nSaishoku kenbi tokai yūei\nBeauty and talent, drifting through the city\n\n今日の輪郭、整ってる\nKyō no rinkaku, totonotteru\nMy outline looks sharp tonight\n\n順風満帆　昇進射程\nJunpū manpan shōshin shatei\nSmooth sailing, promotion within range\n\n焦らなくても間に合うさ\nAseranakute mo maniau sa\nNo need to rush, I'll make it in time\n\n前途洋々　流儀徹底\nZento yōyō ryūgi tettei\nA bright future, discipline upheld\n\n寄り道はしない\nYorimichi wa shinai\nI don't take detours\n\n静観主義　感情制御\nSeikan shugi kanjō seigyo\nObserver's mindset, emotions under control\n\n波は立てない\nNami wa tatenai\nI don't make waves\n\n深夜　宵闇　硝子の街\nShinya yoiyami garasu no machi\nMidnight, dusk-dark, a city of glass\n\n硝子越しの影法師\nGarasu goshi no kagebōshi\nA silhouette beyond the glass\n\n既読無言　余裕装い\nKidoku mugon yoyū yosooi\nRead without reply, dressed in composure\n\n自由という名の矜持\nJiyū to iu na no kyōji\nPride called freedom\n\n着信表示　名前点灯\nChakushin hyōji namae tentō\nIncoming call, the name lights up\n\n今夜、うち来る？\nKonya, uchi kuru?\nComing over tonight?\n\n既読のまま　視線外して\nKidoku no mama shisen hazushite\nLeft on read, I turn my gaze away\n\nすぐに返さない、それが美徳\nSugu ni kaesanai, sore ga bitoku\nNot replying quickly — that's virtue\n\n<span class="chorus">完全無欠　単身貴族\nKanzen muketsu tanshin kizoku\nFlawless, a solitary aristocrat\n\n意気揚々　自己演出\nIki yōyō jiko enshutsu\nHigh-spirited, self-directed\n\n今宵一献　月下独酌\nKoyoi ikkon gekka dokushaku\nA drink tonight, alone under the moon\n\n夜景を背にして独白\nYakei o se ni shite dokuhaku\nConfessing with the skyline behind me\n\nこのままでいいよな\nKono mama de ii yo na\nThis is fine… right?</span>\n\n品位保持　冷静沈着\nHin'i hoji reisei chinchaku\nDignity maintained, calm and composed\n\n感情は揺らさない\nKanjō wa yurasanai\nI won't let my emotions shake\n\n期待管理　成果優先\nKitai kanri seika yūsen\nManaging expectations, results come first\n\n期待は裏切らない\nKitai wa uragiranai\nI don't betray expectations\n\n花鳥風月　風流気取\nKachō fūgetsu fūryū kidori\nElegance of nature, refined airs\n\n弱さは見せない\nYowasa wa misenai\nI don't show weakness\n\n強者演出　表情固定\nKyōsha enshutsu hyōjō kotei\nPerforming strength, expression fixed\n\n今日も　隙はない\nKyō mo suki wa nai\nNo cracks today\n\n明日も崩す理由はない\nAsu mo kuzusu riyū wa nai\nNo reason to break character tomorrow either\n\n無音通知　未読既視\nMuon tsūchi midoku kishi\nSilent notifications, unread yet seen\n\n乾いたグラス　氷溶け\nKawaita gurasu kōri toke\nA dry glass, ice melting\n\n<span class="chorus">完璧主義　自己最適\nKanpeki shugi jiko saiteki\nPerfectionist, self-optimized\n\n弱音封印　感情抑制\nYowane fūin kanjō yokusei\nComplaints sealed, emotions restrained\n\n背筋正して　鏡を見る\nSesuji tadashite kagami o miru\nStraighten my back, look into the mirror\n\n隙は見せない\nSuki wa misenai\nI won't show any cracks\n\nまだ、バレてないよな\nMada, barete nai yo na\nThey still haven't noticed… right?</span>` },
 
@@ -500,6 +587,11 @@ function setLang(l) {
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent === l.toUpperCase()));
   const t = i18n[l];
   // Nav
+  const nn = document.getElementById('nav-news');
+  if (nn) nn.textContent = t.navNews;
+  const nt = document.getElementById('news-title');
+  if (nt) nt.textContent = t.newsTitle;
+  buildNews();
   document.getElementById('nav-music').textContent = t.navMusic;
   document.getElementById('nav-lyrics').textContent = t.navLyrics;
   document.getElementById('nav-concept').textContent = t.navConcept;
@@ -655,6 +747,7 @@ function goToSignup() {
 }
 
 // Init
+buildNews();
 buildLyrics();
 showLyrics(0);
 // 楽曲数は歌詞データから自動計算（新曲追加時に手動更新不要）
