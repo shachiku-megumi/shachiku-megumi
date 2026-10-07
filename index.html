@@ -569,11 +569,12 @@ const spotifyTracks = [
   '1sL3u997zQwbawRMxjHCDM', // 07 無能
   '4Hx18ux7fSl51nATv5Iz67', // 08 磐石
   '71slzXeY99bdSCsPnNmSIJ', // 09 無礼講
-  '25DHA7o5ApPoLfR9bsBCHD', // 10 表アカ
-  '6E5op8hF3TKpaxEcI2utXY', // 11 野暮
-  '2wHDyircJiujF3owqr8zxT', // 12 残像
-  '3qZXAszHWzWFrE2HkLJNTn', // 13 上機嫌
-  '3YpkTr78ll8sm8nqNMoLkF', // 14 余温
+  'album:0Vv6INWDXcyG8BN2r2KUds', // 10 焦熱（シングル）
+  '25DHA7o5ApPoLfR9bsBCHD', // 11 表アカ
+  '6E5op8hF3TKpaxEcI2utXY', // 12 野暮
+  '2wHDyircJiujF3owqr8zxT', // 13 残像
+  '3qZXAszHWzWFrE2HkLJNTn', // 14 上機嫌
+  '3YpkTr78ll8sm8nqNMoLkF', // 15 余温
 ];
 // 最初の8曲がメイン曲、9曲目以降がアルバムのみ収録
 const ALBUM_ONLY_START = 8;
@@ -682,7 +683,9 @@ function buildLyrics() {
 function showLyrics(idx) {
   const pl = document.getElementById('lyricsPlayer');
   const sid = spotifyTracks[idx];
-  pl.innerHTML = sid ? `<iframe src="https://open.spotify.com/embed/track/${sid}?utm_source=generator&theme=0" style="width:100%;max-width:560px;height:152px;border:none;border-radius:12px;display:block;" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Spotify player"></iframe>` : '';
+  const skind = sid && sid.startsWith('album:') ? 'album' : 'track';
+  const sval = sid && sid.startsWith('album:') ? sid.slice(6) : sid;
+  pl.innerHTML = sid ? `<iframe src="https://open.spotify.com/embed/${skind}/${sval}?utm_source=generator&theme=0" style="width:100%;max-width:560px;height:152px;border:none;border-radius:12px;display:block;" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Spotify player"></iframe>` : '';
   const t = lyricsData[idx] || lyricsData[0];
   document.getElementById('lyricsSongTitle').textContent = t.title;
   document.getElementById('lyricsMeta').textContent = t.meta;
