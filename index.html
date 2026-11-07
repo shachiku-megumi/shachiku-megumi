@@ -252,21 +252,6 @@
   <div class="hero-scroll-hint"><div class="scroll-line"></div><span>Scroll</span></div>
 </section>
 
-<section class="signup-mini">
-  <div class="container">
-    <div class="signup-mini-inner reveal">
-      <div class="signup-mini-text">
-        <div class="signup-mini-title" id="mini-title">新曲・MVの最新情報を受け取る</div>
-        <div class="signup-mini-sub" id="mini-sub">メールで先行お届け。いつでも解除できます。</div>
-      </div>
-      <div class="signup-mini-form">
-        <input type="email" class="signup-mini-input" id="mini-input" placeholder="your@email.com">
-        <button class="signup-mini-btn" id="mini-btn" onclick="goToSignup()">登録する</button>
-      </div>
-    </div>
-  </div>
-</section>
-
 <section class="news-section" id="news">
   <div class="container">
     <div class="section-label reveal">News &amp; Topics</div>
@@ -348,21 +333,6 @@
       <a href="https://music.apple.com/jp/artist/megumin2-0/1820172247" target="_blank" class="streaming-card"><img class="streaming-logo" src="applemusic.svg" alt="Apple Music"><div class="streaming-name">Apple Music<br><span style="font-size:0.6rem;color:var(--muted)">Megumin2.0</span></div><div class="streaming-action" id="s-action2b">聴く →</div></a>
       <a href="https://youtube.com/channel/UCr9rHWuoRggA7NaZPJ-KE3A" target="_blank" class="streaming-card"><img class="streaming-logo" src="youtube.png" alt="YouTube"><div class="streaming-name">YouTube Music</div><div class="streaming-action" id="s-action3">聴く →</div></a>
       <a href="https://music.amazon.co.jp/artists/B0GYZS65KF" target="_blank" class="streaming-card"><img class="streaming-logo streaming-logo--wide" src="amazonmusic.png" alt="Amazon Music"><div class="streaming-name">Amazon Music</div><div class="streaming-action" id="s-action4">聴く →</div></a>
-    </div>
-  </div>
-</section>
-
-<section class="signup-section" id="signup">
-  <div class="container">
-    <div class="signup-inner reveal">
-      <div class="section-label" style="justify-content:center;">Newsletter</div>
-      <h2 class="signup-title" id="signup-title">最新情報をいち早く</h2>
-      <p class="signup-desc" id="signup-desc">新曲・MV情報をメールでお届けします。<br>スパムは送りません。いつでも解除できます。</p>
-      <!-- Kit (ConvertKit) 埋め込みフォーム -->
-      <div class="kit-form-wrap">
-        <script async data-uid="47044c7cfe" src="https://shachiku-megumi.kit.com/47044c7cfe/index.js"></script>
-      </div>
-      <div class="signup-note" id="signup-note">※ Kitで安全に管理されます</div>
     </div>
   </div>
 </section>
@@ -653,13 +623,6 @@ function setLang(l) {
   document.getElementById('streaming-title').textContent = t.streamingTitle;
   ['s-action1','s-action2','s-action2b','s-action3','s-action4'].forEach(id => { const el = document.getElementById(id); if(el) el.textContent = t.streamAction; });
   // Signup
-  document.getElementById('signup-title').textContent = t.signupTitle;
-  document.getElementById('signup-desc').innerHTML = t.signupDesc;
-  document.getElementById('signup-note').textContent = t.signupNote;
-  document.getElementById('mini-title').textContent = t.miniTitle;
-  document.getElementById('mini-sub').textContent = t.miniSub;
-  document.getElementById('mini-btn').textContent = t.miniBtn;
-  document.getElementById('mini-input').placeholder = t.miniPlaceholder;
   // Profile
   document.getElementById('profile-title').textContent = t.profileTitle;
   document.getElementById('profile-bio').innerHTML = t.profileBio;
@@ -760,20 +723,6 @@ function loadVideo(id, videoId) {
   f.allowFullscreen = true;
   f.style.cssText = 'width:100%;height:100%;border:none;display:block;min-height:300px;';
   c.innerHTML = ''; c.appendChild(f);
-}
-
-// Mini signup → scroll to Kit form (and carry over email if possible)
-function goToSignup() {
-  const email = (document.getElementById('mini-input').value || '').trim();
-  const section = document.getElementById('signup');
-  if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  if (email) {
-    // 下のKitフォームのメール欄に転記を試みる（読み込み完了後）
-    setTimeout(() => {
-      const kitInput = document.querySelector('.kit-form-wrap input[type="email"], .kit-form-wrap input[name="email_address"]');
-      if (kitInput) { kitInput.value = email; kitInput.focus(); }
-    }, 600);
-  }
 }
 
 // Init
