@@ -271,7 +271,7 @@
       <div class="mv-info">
         <div>
           <div class="mv-tag" id="mv-tag">注目MV</div>
-          <h3 class="mv-title-text">焦熱</h3>
+          <h3 class="mv-title-text" id="mv-song-title">焦熱</h3>
           <p class="mv-desc" id="mv-desc">掌に灯る火種から、ふたりを灰にするまで広がる炎。燃やして、焦がして——灰の奥で、まだ脈打つ。日本語・ローマ字・英訳付きのリリックビデオ。</p>
         </div>
         <div class="mv-meta">
@@ -279,7 +279,7 @@
           <div class="mv-meta-item"><span>Genre</span>AI Music</div>
           <div class="mv-meta-item"><span id="mv-prod-label">制作</span>AI assisted</div>
         </div>
-        <a href="https://www.youtube.com/channel/UCG_r7ssg8YzBNC6Uz4ONZag/join" class="member-cta" target="_blank" rel="noopener">🔒 <span id="member-cta-label">メンバー限定動画 / Members Only</span></a>
+        <a href="https://www.youtube.com/channel/UCG_r7ssg8YzBNC6Uz4ONZag/join" class="member-cta" target="_blank" rel="noopener">🔒 <span id="member-cta-label">メンバー限定動画</span></a>
       </div>
     </div>
   </div>
@@ -361,11 +361,11 @@
           <div class="stat-item"><div class="stat-num" id="stat-count">14</div><div class="stat-label" id="stat-tracks">楽曲</div></div>
           <div class="stat-item"><div class="stat-num">3</div><div class="stat-label" id="stat-lang">言語</div><div class="stat-sub" id="stat-lang-sub">日 / 英 / Romaji</div></div>
           <div class="stat-item"><div class="stat-num">2025.12</div><div class="stat-label" id="stat-since">始動</div></div>
-          <div class="stat-item"><div class="stat-num">AI+人</div><div class="stat-label" id="stat-powered">制作</div></div>
+          <div class="stat-item"><div class="stat-num" id="stat-ai">AI+人</div><div class="stat-label" id="stat-powered">制作</div></div>
         </div>
         <div class="profile-tags">
           <span class="tag">社畜 / Shachiku</span><span class="tag">Dark Hip-Hop</span><span class="tag">Corporate Horror</span>
-          <span class="tag">百鬼夜行</span><span class="tag">AI×人間 / AI×Human</span>
+          <span class="tag" id="tag-hyakki">百鬼夜行</span><span class="tag" id="tag-aihuman">AI×人間</span>
         </div>
       </div>
     </div>
@@ -446,7 +446,7 @@ const newsData = [
     title: { ja:'新曲「非常口」11月11日リリース', en:'New single "Hijōguchi" — out November 11' },
     desc: { ja:'2026年11月11日、各音楽配信サービスにてリリース予定です。YouTubeで先行公開中。', en:'Coming to all major streaming services on November 11, 2026. Early preview now on YouTube.' },
     links: [
-      { label:'YouTube（先行公開）', url:'https://youtu.be/MySjgOQmONU' }
+      { label:{ ja:'YouTube（先行公開）', en:'YouTube (Early Preview)' }, url:'https://youtu.be/MySjgOQmONU' }
     ]
   },
   {
@@ -517,7 +517,7 @@ function buildNews() {
       </div>
       <div class="news-item-title">${n.title[lang]}</div>
       <div class="news-item-desc">${n.desc[lang]}</div>
-      ${n.links ? `<div class="news-links">${n.links.map(l => `<a class="news-link-btn" href="${l.url}" target="_blank" rel="noopener">${l.label}</a>`).join('')}</div>` : ''}`;
+      ${n.links ? `<div class="news-links">${n.links.map(l => `<a class="news-link-btn" href="${l.url}" target="_blank" rel="noopener">${typeof l.label === 'object' ? l.label[lang] : l.label}</a>`).join('')}</div>` : ''}`;
     list.appendChild(el);
   });
 }
@@ -590,6 +590,13 @@ function setLang(l) {
   const nt = document.getElementById('news-title');
   if (nt) nt.textContent = t.newsTitle;
   buildNews();
+  const EN = l === 'en';
+  const setT = (id, ja, en) => { const e = document.getElementById(id); if (e) e.textContent = EN ? en : ja; };
+  setT('mv-song-title', '焦熱', 'Shōnetsu');
+  setT('member-cta-label', 'メンバー限定動画', 'Members-Only Videos');
+  setT('stat-ai', 'AI+人', 'AI+Human');
+  setT('tag-hyakki', '百鬼夜行', 'Hyakki Yagyō');
+  setT('tag-aihuman', 'AI×人間', 'AI×Human');
   document.getElementById('nav-music').textContent = t.navMusic;
   document.getElementById('nav-lyrics').textContent = t.navLyrics;
   document.getElementById('nav-concept').textContent = t.navConcept;
@@ -678,7 +685,7 @@ function showLyrics(idx) {
   pl.innerHTML = sid ? `<iframe src="https://open.spotify.com/embed/${skind}/${sval}?utm_source=generator&theme=0" style="width:100%;max-width:560px;height:152px;border:none;border-radius:12px;display:block;" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Spotify player"></iframe>` : '';
   const t = lyricsData[idx] || lyricsData[0];
   document.getElementById('lyricsSongTitle').textContent = t.title;
-  document.getElementById('lyricsMeta').textContent = t.meta;
+  document.getElementById('lyricsMeta').textContent = lang === 'en' ? t.meta.replace('社畜のめぐみ','Shachiku no Megumin') : t.meta;
   document.getElementById('lyricsBody').innerHTML = t.body;
 }
 
