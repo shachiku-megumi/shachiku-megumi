@@ -2,230 +2,363 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>社畜のめぐみ — Official</title>
+<meta name="description" content="社畜のめぐみ（Shachiku no Megumin）公式サイト。AIで生み出す音楽とMV。全曲の歌詞（日本語・ローマ字・英訳）、最新リリース、配信リンク。">
+<meta name="theme-color" content="#08080d">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="社畜のめぐみ Official">
+<meta property="og:title" content="社畜のめぐみ — Official">
+<meta property="og:description" content="AIと音楽と、社畜の叫び。全曲の歌詞（日本語・ローマ字・英訳）と最新リリース。">
+<meta property="og:url" content="https://shachiku-megumi.github.io/shachiku-megumi/">
+<meta property="og:image" content="https://shachiku-megumi.github.io/shachiku-megumi/artist.jpeg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='8' fill='%23cf4a35'/%3E%3Ctext x='32' y='47' font-size='42' text-anchor='middle' fill='%23f4efe6' font-family='serif' font-weight='700'%3E畜%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700;900&family=Noto+Sans+JP:wght@300;400;700&family=Bebas+Neue&family=Shippori+Mincho:wght@400;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;700;900&family=Noto+Sans+JP:wght@300;400;500;700&family=Bebas+Neue&family=Shippori+Mincho:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --ink: #0a0a12; --ink2: #10101e; --surface: #12121f; --surface2: #1a1a2e;
-    --border: rgba(255,255,255,0.07); --accent: #c8a96e; --accent2: #8b6fd4;
-    --text: #e8e4dc; --muted: #7a7590;
+    --ink: #08080d; --ink2: #0d0d15; --surface: #11111a; --surface2: #191925;
+    --border: rgba(255,255,255,0.08); --border-strong: rgba(255,255,255,0.16);
+    --accent: #c8a96e; --accent-soft: #e2cc9c; --accent2: #9a82e0; --shu: #cf4a35;
+    --text: #eeeae1; --muted: #9690aa; --dim: #6b6680;
+    --mincho: 'Shippori Mincho', 'Noto Serif JP', serif;
+    --serif: 'Noto Serif JP', serif;
+    --sans: 'Noto Sans JP', sans-serif;
+    --nav-h: 64px;
+    --pad: clamp(1.25rem, 5vw, 4rem);
   }
-  html { scroll-behavior: smooth; }
-  body { background: var(--ink); color: var(--text); font-family: 'Noto Sans JP', sans-serif; font-weight: 300; overflow-x: hidden; cursor: none; }
-  .cursor { width: 12px; height: 12px; background: var(--accent); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; mix-blend-mode: difference; }
-  .cursor-ring { width: 36px; height: 36px; border: 1px solid var(--accent); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9998; opacity: 0.5; }
-  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 10000; opacity: 0.4; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body { background: var(--ink); color: var(--text); font-family: var(--sans); font-weight: 400; line-height: 1.8; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+  body.menu-open { overflow: hidden; }
+  img { max-width: 100%; }
+  a { color: inherit; }
+  button { font: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  ::selection { background: var(--accent); color: var(--ink); }
 
-  /* Lang switcher */
-  .lang-switcher { position: fixed; top: 1.15rem; right: 4rem; z-index: 1001; display: flex; border: 1px solid var(--border); }
-  .lang-btn { padding: 0.35rem 1rem; font-size: 0.65rem; letter-spacing: 0.15em; color: var(--muted); background: transparent; border: none; cursor: pointer; transition: all 0.2s; font-family: 'Noto Sans JP', sans-serif; }
+  /* 紙の質感（全体にうっすら） */
+  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E"); pointer-events: none; z-index: 10000; opacity: 0.4; }
+
+  /* カーソル演出はマウスのある端末だけ */
+  .cursor, .cursor-ring { display: none; }
+  @media (hover: hover) and (pointer: fine) {
+    body, a, button { cursor: none; }
+    .cursor { display: block; width: 10px; height: 10px; background: var(--accent); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; mix-blend-mode: difference; }
+    .cursor-ring { display: block; width: 36px; height: 36px; border: 1px solid var(--accent); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9998; opacity: 0.5; transition: width .25s, height .25s, opacity .25s, margin .25s; }
+    .cursor-ring.is-hover { width: 56px; height: 56px; margin: -10px 0 0 -10px; opacity: 0.9; }
+  }
+  #cursorDust { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9000; transition: opacity .8s ease; }
+
+  /* 進行バー */
+  .progress { position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 1200; background: linear-gradient(90deg, var(--accent), var(--accent2)); transform-origin: 0 50%; transform: scaleX(0); }
+
+  /* ───────── Nav ───────── */
+  nav { position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h); z-index: 1100; display: flex; align-items: center; gap: 1.5rem; padding: 0 var(--pad); transition: background .4s, border-color .4s; border-bottom: 1px solid transparent; }
+  nav.scrolled, body.menu-open nav { background: rgba(8,8,13,0.86); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom-color: rgba(200,169,110,0.14); }
+  .nav-logo { font-family: var(--mincho); font-size: 1.05rem; font-weight: 800; letter-spacing: 0.18em; color: var(--accent); text-decoration: none; white-space: nowrap; margin-right: auto; display: flex; align-items: center; gap: 0.7rem; }
+  .nav-logo::before { content: '畜'; display: inline-grid; place-items: center; width: 1.7rem; height: 1.7rem; background: var(--shu); color: #f4efe6; font-size: 0.95rem; letter-spacing: 0; border-radius: 2px; transform: rotate(-4deg); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a { position: relative; color: var(--muted); text-decoration: none; font-size: 0.72rem; letter-spacing: 0.16em; white-space: nowrap; padding: 0.4rem 0; transition: color .2s; }
+  .nav-links a::after { content: ''; position: absolute; left: 0; right: 0; bottom: -2px; height: 1px; background: var(--accent); transform: scaleX(0); transform-origin: 0 50%; transition: transform .3s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--text); }
+  .nav-links a.active::after, .nav-links a:hover::after { transform: scaleX(1); }
+  .lang-switcher { display: flex; border: 1px solid var(--border-strong); flex: none; }
+  .lang-btn { padding: 0.32rem 0.8rem; font-size: 0.66rem; letter-spacing: 0.15em; color: var(--muted); transition: all .2s; }
   .lang-btn.active { background: var(--accent); color: var(--ink); font-weight: 700; }
   .lang-btn:hover:not(.active) { color: var(--accent); }
+  .burger { display: none; width: 44px; height: 44px; margin-right: -10px; position: relative; flex: none; }
+  .burger span { position: absolute; left: 11px; right: 11px; height: 1.5px; background: var(--text); transition: transform .35s, opacity .2s, top .35s; }
+  .burger span:nth-child(1) { top: 16px; } .burger span:nth-child(2) { top: 22px; } .burger span:nth-child(3) { top: 28px; }
+  body.menu-open .burger span:nth-child(1) { top: 22px; transform: rotate(45deg); }
+  body.menu-open .burger span:nth-child(2) { opacity: 0; }
+  body.menu-open .burger span:nth-child(3) { top: 22px; transform: rotate(-45deg); }
 
-  /* Nav */
-  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 4rem; background: rgba(10,10,18,0.92); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid rgba(200,169,110,0.12); }
-  .nav-logo { font-family: 'Shippori Mincho', serif; font-size: 1.1rem; font-weight: 800; letter-spacing: 0.2em; color: var(--accent); text-decoration: none; }
-  .nav-links { display: flex; gap: 2rem; list-style: none; margin-right: 9rem; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
-  .nav-links::-webkit-scrollbar { display: none; }
-  .nav-links a { white-space: nowrap; }
-  .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; transition: color 0.2s; }
-  .nav-links a:hover { color: var(--accent); }
+  /* スマホ用メニュー */
+  .menu { position: fixed; inset: 0; z-index: 1050; background: rgba(8,8,13,0.97); display: flex; flex-direction: column; justify-content: center; padding: calc(var(--nav-h) + 1rem) var(--pad) 2.5rem; opacity: 0; visibility: hidden; transition: opacity .35s, visibility .35s; }
+  body.menu-open .menu { opacity: 1; visibility: visible; }
+  .menu-list { list-style: none; display: grid; gap: 0.2rem; }
+  .menu-list a { display: flex; align-items: baseline; gap: 1.1rem; text-decoration: none; font-family: var(--mincho); font-size: clamp(1.6rem, 7.5vw, 2.2rem); font-weight: 700; padding: 0.55rem 0; border-bottom: 1px solid var(--border); opacity: 0; transform: translateY(14px); transition: opacity .4s, transform .4s, color .2s; }
+  body.menu-open .menu-list a { opacity: 1; transform: none; }
+  .menu-list li:nth-child(2) a { transition-delay: .04s; } .menu-list li:nth-child(3) a { transition-delay: .08s; } .menu-list li:nth-child(4) a { transition-delay: .12s; } .menu-list li:nth-child(5) a { transition-delay: .16s; } .menu-list li:nth-child(6) a { transition-delay: .2s; }
+  .menu-list a i { font-family: 'Bebas Neue', sans-serif; font-style: normal; font-size: 0.85rem; letter-spacing: 0.15em; color: var(--accent); width: 1.6rem; }
+  .menu-list a:active { color: var(--accent); }
+  .menu-social { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 2rem; }
 
-  /* Hero */
-  .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; background: radial-gradient(ellipse at 60% 40%, rgba(139,111,212,0.12) 0%, transparent 60%), radial-gradient(ellipse at 20% 80%, rgba(200,169,110,0.08) 0%, transparent 50%), var(--ink); }
-  .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px); background-size: 60px 60px; animation: gridScroll 20s linear infinite; mask-image: linear-gradient(to bottom, transparent, rgba(0,0,0,0.3) 30%, rgba(0,0,0,0.3) 70%, transparent); }
-  @keyframes gridScroll { to { transform: translateY(60px); } }
-  .particles { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
-  .particle { position: absolute; width: 2px; height: 2px; background: var(--accent); border-radius: 50%; animation: pfloat linear infinite; opacity: 0; }
-  @keyframes pfloat { 0% { transform: translateY(100vh); opacity: 0; } 10% { opacity: 0.6; } 90% { opacity: 0.3; } 100% { transform: translateY(-10vh); opacity: 0; } }
-  .hero-content { position: relative; z-index: 2; text-align: center; padding: 0 2rem; }
-  .hero-eyebrow { display: inline-block; font-size: 0.65rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--accent); border: 1px solid rgba(200,169,110,0.3); padding: 0.4rem 1.4rem; margin-bottom: 2rem; animation: fadeUp 0.8s ease both; }
-  .hero-title { font-family: 'Shippori Mincho', serif; font-size: clamp(3.5rem, 12vw, 9rem); font-weight: 800; line-height: 0.9; margin-bottom: 0.2em; animation: fadeUp 0.8s 0.1s ease both; }
+  /* ───────── Hero ───────── */
+  .hero { position: relative; min-height: 100vh; min-height: 100svh; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); align-items: center; gap: clamp(2rem, 5vw, 5rem); padding: calc(var(--nav-h) + 2rem) var(--pad) 7rem; overflow: hidden; isolation: isolate; }
+  .hero::before { content: ''; position: absolute; inset: 0; z-index: -2; background: radial-gradient(ellipse 60% 50% at 78% 38%, rgba(154,130,224,0.16), transparent 70%), radial-gradient(ellipse 50% 45% at 12% 85%, rgba(200,169,110,0.10), transparent 70%); }
+  .hero-ghost { position: absolute; z-index: -1; left: -0.06em; bottom: -0.2em; font-family: var(--mincho); font-weight: 800; font-size: clamp(14rem, 34vw, 34rem); line-height: 0.8; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.045); white-space: nowrap; pointer-events: none; user-select: none; }
+  .hero-content { position: relative; z-index: 2; max-width: 620px; justify-self: end; width: 100%; }
+  .hero-eyebrow { display: inline-flex; align-items: center; gap: 0.9rem; font-size: 0.66rem; letter-spacing: 0.38em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.8rem; }
+  .hero-eyebrow::before { content: ''; width: 2.6rem; height: 1px; background: var(--accent); }
+  .hero-title { font-family: var(--mincho); font-size: clamp(3.4rem, 9.2vw, 8.4rem); font-weight: 800; line-height: 1.02; letter-spacing: 0.02em; }
+  .hero-title .line { display: block; overflow: hidden; padding: 0.06em 0 0.1em; margin: -0.06em 0 -0.1em; }
+  .hero-title .line > span { display: inline-block; transform: translateY(110%); animation: riseIn 1.1s cubic-bezier(.2,.8,.2,1) forwards; }
+  .hero-title .line:nth-child(2) > span { animation-delay: .14s; }
   .hero-title .gold { color: var(--accent); }
   .hero-title .purple { color: var(--accent2); }
-  .hero-sub { font-family: 'Noto Serif JP', serif; font-size: clamp(0.9rem, 2vw, 1.3rem); font-weight: 300; color: var(--muted); letter-spacing: 0.1em; margin-bottom: 3rem; animation: fadeUp 0.8s 0.2s ease both; }
-  .hero-cta { display: inline-flex; align-items: center; gap: 0.8rem; background: var(--accent); color: var(--ink); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; padding: 1rem 2.5rem; transition: transform 0.2s, box-shadow 0.2s; animation: fadeUp 0.8s 0.3s ease both; }
-  .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 20px 40px rgba(200,169,110,0.25); }
-  .hero-cta-ghost { display: inline-flex; align-items: center; border: 1px solid rgba(255,255,255,0.2); color: var(--text); font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; padding: 1rem 2.5rem; margin-left: 1rem; transition: border-color 0.2s, color 0.2s; animation: fadeUp 0.8s 0.35s ease both; }
+  .hero-romaji { font-family: 'Bebas Neue', sans-serif; font-size: clamp(0.8rem, 1.5vw, 1rem); letter-spacing: 0.52em; color: var(--dim); margin: 1.1rem 0 1.6rem; opacity: 0; animation: fadeUp .9s .5s ease forwards; }
+  .hero-sub { font-family: var(--serif); font-size: clamp(1rem, 1.7vw, 1.25rem); font-weight: 300; color: var(--text); letter-spacing: 0.12em; margin-bottom: 2.4rem; opacity: 0; animation: fadeUp .9s .6s ease forwards; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 0.9rem; opacity: 0; animation: fadeUp .9s .72s ease forwards; }
+  .hero-cta, .hero-cta-ghost { display: inline-flex; align-items: center; justify-content: center; gap: 0.8rem; min-height: 52px; padding: 0 2.2rem; font-size: 0.78rem; letter-spacing: 0.2em; text-decoration: none; transition: transform .25s, box-shadow .25s, background .25s, color .25s, border-color .25s; }
+  .hero-cta { background: var(--accent); color: var(--ink); font-weight: 700; }
+  .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 18px 40px rgba(200,169,110,0.28); background: var(--accent-soft); }
+  .hero-cta-ghost { border: 1px solid var(--border-strong); color: var(--text); }
   .hero-cta-ghost:hover { border-color: var(--accent); color: var(--accent); }
-  .hero-scroll-hint { position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 0.5rem; color: var(--muted); font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase; animation: fadeIn 1s 1s ease both; }
-  .scroll-line { width: 1px; height: 50px; background: linear-gradient(to bottom, var(--muted), transparent); animation: scrollPulse 2s ease infinite; }
-  @keyframes scrollPulse { 0%,100%{ opacity:0.3; } 50%{ opacity:1; } }
-  @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
-  @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
 
-  section { padding: 8rem 0; }
-  .container { max-width: 1200px; margin: 0 auto; padding: 0 4rem; }
-  .section-label { font-size: 0.62rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; display: flex; align-items: center; gap: 1rem; }
-  .section-label::after { content: ''; flex: 1; max-width: 60px; height: 1px; background: var(--accent); opacity: 0.4; }
-  .section-title { font-family: 'Shippori Mincho', serif; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700; line-height: 1.1; margin-bottom: 1.5rem; }
+  .hero-visual { position: relative; z-index: 1; justify-self: start; width: min(100%, 460px); opacity: 0; animation: fadeIn 1.4s .25s ease forwards; }
+  .hero-frame { position: relative; aspect-ratio: 4 / 5; overflow: hidden; background: var(--surface); box-shadow: 0 40px 90px rgba(0,0,0,0.6); }
+  .hero-frame img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; display: block; transform: scale(1.06); animation: slowZoom 14s ease-out forwards; filter: saturate(0.92) contrast(1.04); }
+  .hero-frame::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(8,8,13,0.55), transparent 45%), linear-gradient(120deg, rgba(154,130,224,0.10), transparent 60%); }
+  .hero-visual::before { content: ''; position: absolute; inset: 1.1rem -1.1rem -1.1rem 1.1rem; border: 1px solid rgba(200,169,110,0.45); z-index: -1; }
+  .seal { position: absolute; z-index: 3; right: -1.4rem; bottom: 2.2rem; width: 4.4rem; height: 4.4rem; background: var(--shu); color: #f6f0e4; display: grid; place-items: center; font-family: var(--mincho); font-weight: 800; font-size: 1.35rem; line-height: 1.05; text-align: center; letter-spacing: 0.04em; transform: rotate(-6deg); box-shadow: 0 10px 30px rgba(207,74,53,0.35); border-radius: 3px; }
+  .seal::after { content: ''; position: absolute; inset: 4px; border: 1px solid rgba(246,240,228,0.55); border-radius: 1px; }
+  .hero-vert { position: absolute; z-index: 3; left: -2.6rem; top: 0; writing-mode: vertical-rl; font-family: var(--serif); font-size: 0.78rem; letter-spacing: 0.42em; color: var(--muted); white-space: nowrap; max-height: 100%; overflow: hidden; }
+  .hero-vert::before { content: ''; display: inline-block; width: 1px; height: 3rem; background: var(--accent); margin-bottom: 1rem; vertical-align: top; }
 
-  /* MV */
-  .mv-section { background: var(--ink); }
-  .mv-featured { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--border); margin-bottom: 4rem; overflow: hidden; }
-  .mv-placeholder { width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(135deg, #0d0d1a, #1a1228); color: var(--muted); gap: 1rem; font-size: 0.8rem; letter-spacing: 0.1em; min-height: 300px; }
-  .play-icon { width: 64px; height: 64px; border: 2px solid var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--accent); transition: transform 0.3s, background 0.3s; cursor: pointer; }
-  .play-icon:hover { transform: scale(1.1); background: rgba(200,169,110,0.1); }
-  .mv-info { padding: 3rem; display: flex; flex-direction: column; justify-content: space-between; background: var(--surface); }
-  .mv-tag { display: inline-block; font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent2); border: 1px solid rgba(139,111,212,0.3); padding: 0.3rem 0.8rem; margin-bottom: 1.5rem; width: fit-content; }
-  .mv-title-text { font-family: 'Shippori Mincho', serif; font-size: 2.2rem; font-weight: 700; line-height: 1.2; margin-bottom: 1rem; }
-  .mv-desc { color: var(--muted); font-size: 0.85rem; line-height: 1.9; margin-bottom: 2rem; }
-  .member-cta { display: inline-flex; align-items: center; gap: 0.5em; margin-top: 1.6rem; padding: 0.85rem 1.6rem; border: 1px solid var(--accent); color: var(--accent); font-size: 0.8rem; letter-spacing: 0.12em; text-decoration: none; border-radius: 2px; transition: background 0.3s, color 0.3s; }
+  .hero-latest { position: absolute; z-index: 4; left: var(--pad); right: var(--pad); bottom: 1.6rem; display: flex; align-items: center; gap: 1.1rem; padding: 0.95rem 1.2rem; border: 1px solid var(--border); background: rgba(13,13,21,0.72); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); text-decoration: none; transition: border-color .25s, background .25s; max-width: 760px; }
+  .hero-latest:hover { border-color: var(--accent); background: rgba(25,25,37,0.85); }
+  .hero-latest .dot { flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--shu); box-shadow: 0 0 0 0 rgba(207,74,53,0.6); animation: ping 2.2s infinite; }
+  .hero-latest .lbl { flex: none; font-family: 'Bebas Neue', sans-serif; font-size: 0.85rem; letter-spacing: 0.22em; color: var(--accent); }
+  .hero-latest .ttl { flex: 1; min-width: 0; font-family: var(--mincho); font-weight: 700; font-size: 0.98rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .hero-latest .arr { flex: none; color: var(--accent); transition: transform .25s; }
+  .hero-latest:hover .arr { transform: translateX(4px); }
+
+  @keyframes riseIn { to { transform: none; } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+  @keyframes fadeIn { to { opacity: 1; } }
+  @keyframes slowZoom { to { transform: scale(1); } }
+  @keyframes ping { 0% { box-shadow: 0 0 0 0 rgba(207,74,53,0.6); } 70%, 100% { box-shadow: 0 0 0 12px rgba(207,74,53,0); } }
+
+  /* 曲名が流れる帯 */
+  .ticker { border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--ink2); overflow: hidden; padding: 1.05rem 0; }
+  .ticker-track { display: flex; width: max-content; animation: marquee 60s linear infinite; }
+  .ticker:hover .ticker-track { animation-play-state: paused; }
+  .ticker-group { display: flex; flex: none; }
+  .ticker-item { font-family: var(--mincho); font-weight: 700; font-size: clamp(1.1rem, 2.4vw, 1.6rem); letter-spacing: 0.12em; color: var(--dim); white-space: nowrap; padding: 0 1.4rem; display: flex; align-items: center; gap: 2.8rem; }
+  .ticker-item::after { content: '◆'; font-size: 0.45em; color: var(--accent); opacity: 0.8; }
+  .ticker-item:nth-child(3n+1) { color: var(--text); }
+  @keyframes marquee { to { transform: translateX(-50%); } }
+
+  /* ───────── 共通 ───────── */
+  section { position: relative; padding: clamp(4.5rem, 10vw, 8rem) 0; scroll-margin-top: var(--nav-h); }
+  .container { max-width: 1240px; margin: 0 auto; padding: 0 var(--pad); }
+  .sec-head { position: relative; display: flex; align-items: flex-end; gap: clamp(1rem, 3vw, 2rem); margin-bottom: clamp(2rem, 5vw, 3.5rem); padding-bottom: 1.4rem; border-bottom: 1px solid var(--border); }
+  .sec-no { font-family: 'Bebas Neue', sans-serif; font-size: clamp(3.4rem, 9vw, 6rem); line-height: 0.8; color: transparent; -webkit-text-stroke: 1px rgba(200,169,110,0.55); letter-spacing: 0.02em; }
+  .section-label { font-size: 0.64rem; letter-spacing: 0.4em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
+  .section-title { font-family: var(--mincho); font-size: clamp(1.9rem, 5vw, 3.2rem); font-weight: 700; line-height: 1.15; }
+  .btn-line { display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; min-height: 46px; padding: 0 1.5rem; border: 1px solid var(--border-strong); color: var(--text); font-size: 0.76rem; letter-spacing: 0.14em; text-decoration: none; transition: border-color .25s, color .25s, background .25s; }
+  .btn-line:hover { border-color: var(--accent); color: var(--accent); }
+  .reveal { opacity: 0; transform: translateY(26px); transition: opacity .9s ease, transform .9s cubic-bezier(.2,.8,.2,1); }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ───────── News ───────── */
+  .news-section { background: var(--ink); }
+  .news-item { display: grid; grid-template-columns: 11.5rem minmax(0, 1fr); gap: 0.6rem 2rem; padding: 1.7rem 0; border-bottom: 1px solid var(--border); }
+  .news-item:first-child { padding: 2rem clamp(1rem, 3vw, 2rem); margin-bottom: 0.4rem; background: linear-gradient(120deg, rgba(200,169,110,0.07), rgba(154,130,224,0.05)); border: 1px solid rgba(200,169,110,0.28); position: relative; }
+  .news-item:first-child::before { content: 'LATEST'; position: absolute; top: -0.7rem; left: clamp(1rem, 3vw, 2rem); background: var(--shu); color: #f6f0e4; font-family: 'Bebas Neue', sans-serif; font-size: 0.78rem; letter-spacing: 0.22em; padding: 0.12rem 0.7rem 0.05rem; }
+  .news-item.is-old { display: none; }
+  .news-list.show-all .news-item.is-old { display: grid; }
+  .news-head { display: flex; flex-direction: column; align-items: flex-start; gap: 0.55rem; }
+  .news-date { font-family: 'Bebas Neue', sans-serif; font-size: 1.05rem; letter-spacing: 0.14em; color: var(--muted); line-height: 1; }
+  .news-tag { font-size: 0.64rem; letter-spacing: 0.18em; text-transform: uppercase; padding: 0.22rem 0.7rem; border: 1px solid rgba(200,169,110,0.45); color: var(--accent); white-space: nowrap; }
+  .news-tag.release { border-color: rgba(154,130,224,0.5); color: var(--accent2); }
+  .news-item-title { font-family: var(--mincho); font-size: clamp(1.05rem, 2.2vw, 1.3rem); font-weight: 700; line-height: 1.55; margin-bottom: 0.4rem; }
+  .news-item:first-child .news-item-title { font-size: clamp(1.25rem, 3vw, 1.7rem); }
+  .news-item-desc { font-size: 0.9rem; line-height: 1.9; color: var(--muted); }
+  .news-links { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem; }
+  .news-link-btn { display: inline-flex; align-items: center; min-height: 40px; font-size: 0.74rem; letter-spacing: 0.1em; padding: 0 1.05rem; border: 1px solid var(--border-strong); color: var(--text); text-decoration: none; transition: all .2s; }
+  .news-link-btn::after { content: '↗'; margin-left: 0.5rem; color: var(--accent); font-size: 0.85em; }
+  .news-link-btn:hover { border-color: var(--accent); color: var(--accent); background: rgba(200,169,110,0.06); }
+  .news-more { margin-top: 1.8rem; }
+
+  /* ───────── MV ───────── */
+  .mv-section { background: var(--ink2); }
+  .mv-featured { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); border: 1px solid var(--border); background: var(--surface); }
+  .mv-frame { position: relative; aspect-ratio: 16 / 9; background: #000; align-self: stretch; }
+  .mv-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; display: block; }
+  .mv-info { padding: clamp(1.5rem, 3.5vw, 2.8rem); display: flex; flex-direction: column; gap: 1.4rem; justify-content: center; }
+  .mv-tag { display: inline-block; font-size: 0.64rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--accent2); border: 1px solid rgba(154,130,224,0.4); padding: 0.28rem 0.8rem; margin-bottom: 1rem; }
+  .mv-title-text { font-family: var(--mincho); font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 700; line-height: 1.2; margin-bottom: 0.8rem; }
+  .mv-desc { color: var(--muted); font-size: 0.9rem; line-height: 2; }
+  .mv-meta { display: flex; gap: 1.8rem; flex-wrap: wrap; padding-top: 1.2rem; border-top: 1px solid var(--border); }
+  .mv-meta-item { font-size: 0.82rem; color: var(--text); }
+  .mv-meta-item span { display: block; color: var(--accent); font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.2rem; }
+  .member-cta { align-self: flex-start; border-color: var(--accent); color: var(--accent); }
   .member-cta:hover { background: var(--accent); color: var(--ink); }
-  .mv-meta { display: flex; gap: 2rem; flex-wrap: wrap; }
-  .mv-meta-item { font-size: 0.72rem; color: var(--muted); }
-  .mv-meta-item span { display: block; color: var(--accent); font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.3rem; }
 
-  /* Track grid - 12 tracks, 3 col */
-  .track-group-label { font-size: 0.62rem; letter-spacing: 0.35em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.2rem; display: flex; align-items: center; gap: 1rem; }
-  .track-group-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-  .track-group-label.album { color: var(--accent2); margin-top: 1rem; }
-
-  /* Lyrics */
+  /* ───────── Lyrics ───────── */
   .lyrics-section { background: var(--surface); }
-  .lyrics-layout { display: grid; grid-template-columns: 1fr; gap: 2.5rem; align-items: start; }
-  .lyrics-selector { display: flex; flex-direction: row; flex-wrap: nowrap; align-items: center; gap: 0.5rem; overflow-x: auto; overflow-y: hidden; border: 1px solid var(--border); padding: 0.5rem 0.6rem; scrollbar-width: thin; scrollbar-color: var(--border) transparent; -webkit-overflow-scrolling: touch; }
-  .lyrics-selector::-webkit-scrollbar { height: 4px; }
-  .lyrics-selector::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-  .lyrics-tab { flex: 0 0 auto; white-space: nowrap; padding: 0.55rem 0.95rem; cursor: pointer; border: 1px solid var(--border); border-radius: 999px; font-family: 'Shippori Mincho', serif; font-size: 0.92rem; color: var(--muted); transition: all 0.2s; display: flex; align-items: center; gap: 0.4rem; }
-  .lyrics-tab:hover { background: var(--surface2); color: var(--text); }
-  .lyrics-tab.active { background: var(--ink2); color: var(--accent); border-color: var(--accent); }
-  .tab-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); opacity: 0; transition: opacity 0.2s; }
-  .lyrics-tab.active .tab-dot { opacity: 1; }
-  .lyrics-group-label { flex: 0 0 auto; white-space: nowrap; padding: 0 0.5rem 0 0.3rem; font-size: 0.55rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); border-left: 1px solid var(--border); }
-  .lyrics-group-label:first-child { border-left: none; }
-  .lyrics-group-label.album { color: var(--accent2); }
-  .lyrics-tab.album.active { border-color: var(--accent2); color: var(--accent2); }
-  .lyrics-tab.album.active .tab-dot { background: var(--accent2); }
-  .lyrics-song-title { font-family: 'Shippori Mincho', serif; font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
-  .lyrics-player { margin: 1rem 0 1.2rem; }
-  .lyrics-meta-info { color: var(--muted); font-size: 0.75rem; letter-spacing: 0.1em; margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
-  .lyrics-body { font-family: 'Noto Serif JP', serif; font-size: 1.05rem; line-height: 2.4; white-space: pre-line; }
-  .lyrics-body .chorus { color: var(--accent); }
+  .lyrics-selector-wrap { position: relative; margin-bottom: clamp(2rem, 4vw, 3rem); }
+  .lyrics-selector-wrap::before, .lyrics-selector-wrap::after { content: ''; position: absolute; top: 0; bottom: 6px; width: 2.2rem; pointer-events: none; z-index: 2; opacity: 0; transition: opacity .25s; }
+  .lyrics-selector-wrap::before { left: 0; background: linear-gradient(90deg, var(--surface), transparent); }
+  .lyrics-selector-wrap::after { right: 0; background: linear-gradient(270deg, var(--surface), transparent); }
+  .lyrics-selector-wrap.fade-l::before, .lyrics-selector-wrap.fade-r::after { opacity: 1; }
+  .lyrics-selector { display: flex; align-items: center; gap: 0.5rem; overflow-x: auto; padding: 2px 2px 8px; scrollbar-width: thin; scrollbar-color: var(--border-strong) transparent; -webkit-overflow-scrolling: touch; scroll-snap-type: x proximity; }
+  .lyrics-selector::-webkit-scrollbar { height: 3px; }
+  .lyrics-selector::-webkit-scrollbar-thumb { background: var(--border-strong); }
+  .lyrics-tab { flex: none; scroll-snap-align: center; display: inline-flex; align-items: center; gap: 0.55rem; min-height: 44px; padding: 0 1.05rem; border: 1px solid var(--border-strong); border-radius: 999px; font-family: var(--mincho); font-size: 0.98rem; font-weight: 700; color: var(--muted); white-space: nowrap; transition: all .2s; }
+  .lyrics-tab i { font-family: 'Bebas Neue', sans-serif; font-style: normal; font-weight: 400; font-size: 0.72rem; letter-spacing: 0.1em; color: var(--dim); }
+  .lyrics-tab:hover { color: var(--text); border-color: var(--muted); }
+  .lyrics-tab.active { background: var(--accent); border-color: var(--accent); color: var(--ink); }
+  .lyrics-tab.active i { color: rgba(8,8,13,0.6); }
+  .lyrics-tab.album.active { background: var(--accent2); border-color: var(--accent2); }
+  .lyrics-group-label { flex: none; white-space: nowrap; font-size: 0.6rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--accent); padding: 0 0.6rem 0 0.2rem; }
+  .lyrics-group-label.album { color: var(--accent2); padding-left: 1rem; margin-left: 0.5rem; border-left: 1px solid var(--border-strong); }
 
-  /* Concept */
-  .concept-section { background: var(--ink); overflow: hidden; position: relative; }
-  .concept-section::before { content: '社畜'; position: absolute; right: -4rem; top: 50%; transform: translateY(-50%); font-family: 'Shippori Mincho', serif; font-size: 22rem; font-weight: 900; color: rgba(255,255,255,0.015); line-height: 1; pointer-events: none; }
-  .concept-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
-  .concept-quote { font-family: 'Noto Serif JP', serif; font-size: clamp(1.1rem, 2.5vw, 1.5rem); font-weight: 300; line-height: 1.9; margin-bottom: 2.5rem; padding-left: 2rem; border-left: 2px solid var(--accent); }
-  .concept-body { color: var(--muted); font-size: 0.88rem; line-height: 2.2; }
-  .concept-visual { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); }
-  .concept-tile { background: var(--surface); padding: 2.5rem 2rem; text-align: center; }
-  .concept-tile-icon { font-family: 'Shippori Mincho', serif; font-size: 2.2rem; color: var(--accent); line-height: 1; margin-bottom: 1rem; }
-  .concept-tile-strong { display: block; color: var(--text); font-family: 'Shippori Mincho', serif; font-size: 1.1rem; margin-bottom: 0.3rem; font-weight: 700; }
-  .concept-tile-sub { display: block; color: var(--muted); font-size: 0.82rem; line-height: 1.6; }
+  .lyrics-layout { display: grid; grid-template-columns: minmax(0, 380px) minmax(0, 1fr); gap: clamp(2rem, 6vw, 5.5rem); align-items: start; }
+  .lyrics-side { position: sticky; top: calc(var(--nav-h) + 1.5rem); }
+  .lyrics-no { font-family: 'Bebas Neue', sans-serif; font-size: 0.95rem; letter-spacing: 0.24em; color: var(--accent); margin-bottom: 0.5rem; }
+  .lyrics-song-title { font-family: var(--mincho); font-size: clamp(2.4rem, 6vw, 3.6rem); font-weight: 800; line-height: 1.15; margin-bottom: 0.6rem; }
+  .lyrics-meta-info { color: var(--muted); font-size: 0.76rem; letter-spacing: 0.08em; margin-bottom: 1.4rem; }
+  .lyrics-player { margin-bottom: 1.4rem; min-height: 152px; }
+  .lyrics-player iframe { width: 100%; height: 152px; border: none; border-radius: 12px; display: block; }
+  .lyrics-toggles { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+  .lyrics-toggles > span { font-size: 0.62rem; letter-spacing: 0.24em; text-transform: uppercase; color: var(--dim); margin-right: 0.3rem; }
+  .chip { display: inline-flex; align-items: center; gap: 0.5rem; min-height: 38px; padding: 0 0.95rem; border: 1px solid var(--border-strong); border-radius: 999px; font-size: 0.74rem; letter-spacing: 0.08em; color: var(--dim); transition: all .2s; }
+  .chip::before { content: ''; width: 8px; height: 8px; border-radius: 50%; border: 1px solid currentColor; }
+  .chip[aria-pressed="true"] { color: var(--text); border-color: var(--accent); }
+  .chip[aria-pressed="true"]::before { background: var(--accent); border-color: var(--accent); }
 
-  /* Streaming */
-  .streaming-section { background: var(--surface); }
-  .streaming-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: var(--border); }
-  .streaming-card { background: var(--ink); padding: 2.5rem 2rem; display: flex; flex-direction: column; align-items: center; gap: 1rem; text-decoration: none; transition: background 0.2s; text-align: center; }
+  .lyrics-body { position: relative; }
+  .lyrics-body.collapsed { max-height: 38rem; overflow: hidden; -webkit-mask-image: linear-gradient(to bottom, #000 62%, transparent); mask-image: linear-gradient(to bottom, #000 62%, transparent); }
+  .stz { padding: 0.15rem 0 0.15rem 1.3rem; margin-bottom: 1.55rem; border-left: 1px solid transparent; }
+  .stz p { margin: 0; }
+  .l-ja { font-family: var(--serif); font-size: clamp(1.08rem, 2.1vw, 1.3rem); font-weight: 400; line-height: 1.75; color: var(--text); letter-spacing: 0.04em; }
+  .l-ro { font-size: 0.8rem; line-height: 1.6; color: var(--dim); letter-spacing: 0.06em; margin-top: 0.2rem !important; }
+  .l-en { font-family: Georgia, 'Times New Roman', serif; font-style: italic; font-size: 0.95rem; line-height: 1.6; color: var(--muted); margin-top: 0.12rem !important; }
+  .stz.chorus { border-left-color: var(--accent); }
+  .stz.chorus .l-ja { color: var(--accent-soft); font-weight: 700; }
+  .stz.chorus-start { margin-top: 2.2rem; }
+  .stz.chorus-end { margin-bottom: 2.4rem; }
+  .hide-ro .l-ro, .hide-en .l-en { display: none; }
+  .lyrics-expand { margin-top: 0.4rem; width: 100%; }
+  .lyrics-expand[hidden] { display: none; }
+  .lyrics-nav { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-top: 2.5rem; padding-top: 1.8rem; border-top: 1px solid var(--border); }
+  .lyrics-nav button { display: flex; flex-direction: column; gap: 0.2rem; text-align: left; padding: 0.9rem 1.1rem; border: 1px solid var(--border); transition: border-color .2s, background .2s; min-width: 0; }
+  .lyrics-nav button:last-child { text-align: right; align-items: flex-end; }
+  .lyrics-nav button:hover { border-color: var(--accent); background: rgba(200,169,110,0.05); }
+  .lyrics-nav small { font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); }
+  .lyrics-nav b { font-family: var(--mincho); font-size: 1.15rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+
+  /* ───────── Concept ───────── */
+  .concept-section { background: var(--ink); overflow: hidden; }
+  .concept-section::before { content: '社畜'; position: absolute; right: -3rem; top: 50%; transform: translateY(-50%); font-family: var(--mincho); font-size: clamp(12rem, 26vw, 24rem); font-weight: 800; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.035); line-height: 1; pointer-events: none; writing-mode: vertical-rl; }
+  .concept-grid { position: relative; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: clamp(2.5rem, 6vw, 6rem); align-items: center; }
+  .concept-quote { font-family: var(--mincho); font-size: clamp(1.35rem, 3.2vw, 2.1rem); font-weight: 700; line-height: 1.75; margin-bottom: 2.2rem; padding-left: 1.5rem; border-left: 2px solid var(--accent); }
+  .concept-body { color: var(--muted); font-size: 0.94rem; line-height: 2.2; }
+  .concept-visual { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .concept-tile { background: var(--surface); padding: clamp(1.4rem, 3vw, 2.4rem) clamp(0.9rem, 2vw, 1.6rem); text-align: center; transition: background .3s; }
+  .concept-tile:hover { background: var(--surface2); }
+  .concept-tile-icon { font-family: var(--mincho); font-size: clamp(2.2rem, 5vw, 3rem); font-weight: 700; color: var(--accent); line-height: 1; margin-bottom: 0.9rem; }
+  .concept-tile:nth-child(2) .concept-tile-icon, .concept-tile:nth-child(3) .concept-tile-icon { color: var(--accent2); }
+  .concept-tile-strong { display: block; font-family: var(--mincho); font-size: 1.02rem; margin-bottom: 0.35rem; font-weight: 700; }
+  .concept-tile-sub { display: block; color: var(--muted); font-size: 0.78rem; line-height: 1.7; }
+
+  /* ───────── Streaming ───────── */
+  .streaming-section { background: var(--ink2); }
+  .streaming-embed { max-width: 760px; margin: 0 auto 2.5rem; }
+  .streaming-embed iframe { border-radius: 12px; width: 100%; height: 352px; border: none; display: block; }
+  .streaming-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+  .streaming-card { background: var(--ink); padding: 2rem 1rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.8rem; text-decoration: none; text-align: center; transition: background .25s; min-height: 170px; }
   .streaming-card:hover { background: var(--surface2); }
-  .streaming-logo { height: 44px; width: auto; max-width: 120px; object-fit: contain; display: block; }
-  .streaming-logo--wide { height: 64px; border-radius: 8px; }
-  .streaming-name { font-size: 0.8rem; color: var(--text); letter-spacing: 0.1em; }
-  .streaming-action { font-size: 0.65rem; color: var(--muted); letter-spacing: 0.15em; text-transform: uppercase; }
+  .streaming-logo { height: 40px; width: auto; max-width: 110px; object-fit: contain; display: block; }
+  .streaming-logo--wide { height: 56px; border-radius: 8px; }
+  .streaming-name { font-size: 0.84rem; letter-spacing: 0.08em; line-height: 1.4; }
+  .streaming-name span { font-size: 0.66rem; color: var(--muted); }
+  .streaming-action { font-size: 0.68rem; color: var(--accent); letter-spacing: 0.16em; text-transform: uppercase; }
 
-  /* Signup mini (top) */
-  .news-section { background: var(--ink); padding: 6rem 0; }
-  .news-list { border-top: 1px solid var(--border); }
-  .news-item { display: block; text-decoration: none; color: inherit; border-bottom: 1px solid var(--border); padding: 1.6rem 0.5rem; transition: background 0.2s, padding-left 0.2s; }
-  .news-item:hover { background: var(--surface); padding-left: 1rem; }
-  .news-head { display: flex; align-items: center; gap: 1rem; margin-bottom: 0.6rem; flex-wrap: wrap; }
-  .news-date { font-family: 'Bebas Neue', sans-serif; font-size: 0.85rem; letter-spacing: 0.12em; color: var(--muted); }
-  .news-tag { font-size: 0.58rem; letter-spacing: 0.22em; text-transform: uppercase; padding: 0.25rem 0.7rem; border: 1px solid rgba(200,169,110,0.4); color: var(--accent); }
-  .news-tag.release { border-color: rgba(139,111,212,0.4); color: var(--accent2); }
-  .news-item-title { font-family: 'Shippori Mincho', serif; font-size: 1.05rem; font-weight: 700; line-height: 1.5; margin-bottom: 0.4rem; }
-  .news-item-desc { font-size: 0.82rem; line-height: 1.9; color: var(--muted); }
-  .news-links { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.9rem; }
-  .news-link-btn { font-size: 0.65rem; letter-spacing: 0.12em; padding: 0.4rem 0.9rem; border: 1px solid var(--border); color: var(--muted); text-decoration: none; transition: all 0.2s; }
-  .news-link-btn:hover { border-color: var(--accent); color: var(--accent); }
-  .signup-mini { background: linear-gradient(135deg, rgba(139,111,212,0.08), rgba(200,169,110,0.05)), var(--ink2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 3.5rem 0; }
-  .signup-mini-inner { max-width: 760px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
-  .signup-mini-text { flex: 1; min-width: 220px; }
-  .signup-mini-title { font-family: 'Shippori Mincho', serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 0.3rem; }
-  .signup-mini-sub { color: var(--muted); font-size: 0.78rem; letter-spacing: 0.05em; }
-  .signup-mini-form { display: flex; gap: 0; min-width: 320px; flex: 1; }
-  .signup-mini-input { flex: 1; background: var(--surface); border: 1px solid var(--border); border-right: none; color: var(--text); font-family: 'Noto Sans JP', sans-serif; font-size: 0.85rem; padding: 0.85rem 1.1rem; outline: none; transition: border-color 0.2s; }
-  .signup-mini-input:focus { border-color: var(--accent); }
-  .signup-mini-input::placeholder { color: var(--muted); }
-  .signup-mini-btn { background: var(--accent); color: var(--ink); border: none; padding: 0.85rem 1.6rem; font-family: 'Noto Sans JP', sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; transition: opacity 0.2s; white-space: nowrap; }
-  .signup-mini-btn:hover { opacity: 0.85; }
-
-  /* Signup */
-  .signup-section { background: var(--ink2); }
-  .signup-inner { max-width: 640px; margin: 0 auto; text-align: center; }
-  .signup-title { font-family: 'Shippori Mincho', serif; font-size: clamp(1.6rem, 4vw, 2.5rem); font-weight: 700; margin-bottom: 1rem; }
-  .signup-desc { color: var(--muted); font-size: 0.88rem; line-height: 2; margin-bottom: 2.5rem; }
-  .signup-form { display: flex; gap: 0; max-width: 480px; margin: 0 auto 1rem; }
-  .signup-input { flex: 1; background: var(--surface); border: 1px solid var(--border); border-right: none; color: var(--text); font-family: 'Noto Sans JP', sans-serif; font-size: 0.85rem; padding: 0.9rem 1.2rem; outline: none; transition: border-color 0.2s; }
-  .signup-input:focus { border-color: var(--accent); }
-  .signup-input::placeholder { color: var(--muted); }
-  .signup-btn { background: var(--accent); color: var(--ink); border: none; padding: 0.9rem 1.8rem; font-family: 'Noto Sans JP', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; cursor: pointer; transition: opacity 0.2s; white-space: nowrap; }
-  .signup-btn:hover { opacity: 0.85; }
-  .signup-note { font-size: 0.65rem; color: var(--muted); letter-spacing: 0.1em; }
-  .kit-form-wrap { max-width: 480px; margin: 0 auto 1rem; }
-  .kit-form-wrap .formkit-form { margin: 0 auto !important; }
-
-  /* Profile */
+  /* ───────── Profile ───────── */
   .profile-section { background: var(--ink); }
-  .profile-layout { display: grid; grid-template-columns: 280px 1fr; gap: 7rem; align-items: start; }
-  .profile-visual { position: sticky; top: 8rem; }
-  .profile-avatar { width: 100%; aspect-ratio: 3/4; background: linear-gradient(135deg, var(--surface2), var(--surface)); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; margin-bottom: 1.5rem; }
+  .profile-layout { display: grid; grid-template-columns: minmax(0, 320px) minmax(0, 1fr); gap: clamp(2.5rem, 7vw, 6rem); align-items: start; }
+  .profile-visual { position: sticky; top: calc(var(--nav-h) + 1.5rem); }
+  .profile-avatar { position: relative; aspect-ratio: 1 / 1; background: var(--surface); border: 1px solid var(--border); margin-bottom: 1.4rem; }
   .artist-photo { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .avatar-placeholder { text-align: center; color: var(--muted); font-family: 'Shippori Mincho', serif; font-size: 4rem; font-weight: 900; }
-  .avatar-placeholder small { display: block; font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; margin-top: 0.5rem; font-family: 'Noto Sans JP', sans-serif; }
-  .profile-corner { position: absolute; bottom: 0; right: 0; width: 80px; height: 80px; background: linear-gradient(135deg, transparent 50%, rgba(200,169,110,0.15) 50%); }
-  .social-links { display: flex; gap: 0.6rem; flex-wrap: wrap; }
-  .social-link { font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; border: 1px solid var(--border); padding: 0.5rem 0.9rem; color: var(--muted); text-decoration: none; transition: all 0.2s; }
+  .profile-avatar .seal { right: -0.9rem; bottom: -0.9rem; width: 3.6rem; height: 3.6rem; font-size: 1.1rem; }
+  .social-links { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .social-link { display: inline-flex; align-items: center; min-height: 40px; font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; border: 1px solid var(--border-strong); padding: 0 1rem; color: var(--text); text-decoration: none; transition: all .2s; }
   .social-link:hover { border-color: var(--accent); color: var(--accent); }
-  .profile-name { font-family: 'Shippori Mincho', serif; font-size: 2.5rem; font-weight: 700; margin-bottom: 0.3rem; }
-  .profile-name-en { font-size: 0.8rem; color: var(--muted); letter-spacing: 0.3em; text-transform: uppercase; margin-bottom: 2.5rem; }
-  .profile-bio { color: var(--muted); font-size: 0.88rem; line-height: 2.4; margin-bottom: 3rem; }
-  .profile-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); margin-bottom: 3rem; }
-  .stat-item { background: var(--surface); padding: 1.5rem; text-align: center; }
-  .stat-num { font-family: 'Shippori Mincho', serif; font-weight: 800; font-size: 1.8rem; color: var(--accent); letter-spacing: 0.05em; }
-  .stat-sub { font-size: 0.55rem; color: var(--muted); letter-spacing: 0.08em; margin-top: 0.25rem; }
-  .stat-label { font-size: 0.65rem; color: var(--muted); letter-spacing: 0.2em; text-transform: uppercase; margin-top: 0.3rem; }
+  .profile-name { font-family: var(--mincho); font-size: clamp(2rem, 5vw, 2.8rem); font-weight: 800; line-height: 1.2; }
+  .profile-name-en { font-family: 'Bebas Neue', sans-serif; font-size: 0.95rem; color: var(--dim); letter-spacing: 0.4em; margin: 0.4rem 0 2rem; }
+  .profile-bio { color: var(--muted); font-size: 0.95rem; line-height: 2.2; margin-bottom: 2.5rem; }
+  .profile-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-bottom: 2rem; }
+  .stat-item { background: var(--surface); padding: 1.4rem 0.6rem; text-align: center; }
+  .stat-num { font-family: var(--mincho); font-weight: 800; font-size: clamp(1.25rem, 2.6vw, 1.7rem); color: var(--accent); line-height: 1.3; white-space: nowrap; }
+  .stat-label { font-size: 0.66rem; color: var(--muted); letter-spacing: 0.18em; text-transform: uppercase; margin-top: 0.2rem; }
+  .stat-sub { font-size: 0.6rem; color: var(--dim); margin-top: 0.15rem; }
   .profile-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-  .tag { font-size: 0.65rem; letter-spacing: 0.15em; border: 1px solid var(--border); padding: 0.35rem 0.9rem; color: var(--muted); }
+  .tag { font-size: 0.7rem; letter-spacing: 0.12em; border: 1px solid var(--border); padding: 0.4rem 0.9rem; color: var(--muted); }
 
-  footer { background: var(--ink2); border-top: 1px solid var(--border); padding: 4rem; display: flex; align-items: center; justify-content: space-between; }
-  .footer-logo { font-family: 'Shippori Mincho', serif; font-size: 1.5rem; font-weight: 900; color: var(--accent); }
-  .footer-copy { font-size: 0.7rem; color: var(--muted); letter-spacing: 0.1em; }
+  /* ───────── Footer ───────── */
+  footer { background: var(--ink2); border-top: 1px solid var(--border); padding: clamp(3rem, 7vw, 5rem) var(--pad) 2.2rem; }
+  .footer-top { max-width: 1240px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 2rem; padding-bottom: 2.4rem; border-bottom: 1px solid var(--border); }
+  .footer-logo { font-family: var(--mincho); font-size: clamp(2rem, 6vw, 3.4rem); font-weight: 800; color: var(--accent); line-height: 1.1; }
+  .footer-tag { font-family: var(--serif); font-size: 0.86rem; color: var(--muted); letter-spacing: 0.12em; margin-top: 0.5rem; }
+  .footer-bottom { max-width: 1240px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; padding-top: 1.6rem; }
+  .footer-copy { font-size: 0.72rem; color: var(--dim); letter-spacing: 0.08em; }
+  .to-top { font-size: 0.7rem; letter-spacing: 0.22em; color: var(--muted); text-decoration: none; display: inline-flex; align-items: center; gap: 0.6rem; min-height: 40px; }
+  .to-top:hover { color: var(--accent); }
 
-  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
-
+  /* ───────── タブレット・スマホ ───────── */
   @media (max-width: 900px) {
-    nav { padding: 1rem 1.2rem; } .nav-links { gap: 1rem; margin-right: 6.2rem; } .lang-switcher { right: 1.2rem; }
-    .container { padding: 0 1.5rem; } .mv-featured { grid-template-columns: 1fr; } .lyrics-layout { grid-template-columns: 1fr; gap: 3rem; }
-    .concept-grid { grid-template-columns: 1fr; gap: 3rem; } .streaming-grid { grid-template-columns: repeat(2, 1fr); }
-    .profile-layout { grid-template-columns: 1fr; gap: 3rem; } .profile-visual { position: static; }
-    footer { flex-direction: column; gap: 1rem; text-align: center; }
-    .signup-form { flex-direction: column; } .signup-input { border-right: 1px solid var(--border); border-bottom: none; }
-    .signup-mini-inner { flex-direction: column; text-align: center; } .signup-mini-form { flex-direction: column; width: 100%; } .signup-mini-input { border-right: 1px solid var(--border); }
+    .nav-links { display: none; }
+    .burger { display: block; }
+    .nav-logo { font-size: 0.98rem; letter-spacing: 0.14em; }
+
+    .hero { grid-template-columns: 1fr; align-items: end; gap: 0; padding: 0 var(--pad) 5.6rem; min-height: 100svh; }
+    .hero-visual { position: absolute; inset: 0 0 auto 0; width: 100%; height: 62svh; z-index: -1; animation-delay: 0s; }
+    .hero-visual::before, .hero-vert, .hero-visual > .seal { display: none; }
+    .hero-frame { aspect-ratio: auto; height: 100%; box-shadow: none; }
+    .hero-frame img { object-position: 50% 22%; }
+    .hero-frame::after { background: linear-gradient(to bottom, rgba(8,8,13,0.55) 0%, rgba(8,8,13,0) 22%, rgba(8,8,13,0.25) 52%, var(--ink) 97%); }
+    .hero-ghost { display: none; }
+    .hero-content { justify-self: start; padding-top: 42svh; }
+    .hero-eyebrow { margin-bottom: 1rem; }
+    .hero-title { font-size: clamp(3.3rem, 17vw, 5.2rem); text-shadow: 0 4px 30px rgba(8,8,13,0.7); }
+    .hero-romaji { margin: 0.8rem 0 1rem; letter-spacing: 0.42em; }
+    .hero-sub { margin-bottom: 1.6rem; }
+    .hero-actions { gap: 0.7rem; }
+    .hero-cta, .hero-cta-ghost { flex: 1 1 auto; padding: 0 1.2rem; letter-spacing: 0.14em; }
+    .hero-latest { bottom: 1.2rem; gap: 0.8rem; padding: 0.85rem 1rem; }
+
+    .news-item { grid-template-columns: 1fr; gap: 0.7rem; padding: 1.5rem 0; }
+    .news-head { flex-direction: row; align-items: center; gap: 0.9rem; }
+    .mv-featured { grid-template-columns: 1fr; }
+    .lyrics-layout { grid-template-columns: 1fr; gap: 2rem; }
+    .lyrics-side { position: static; }
+    .lyrics-body.collapsed { max-height: 32rem; }
+    .concept-grid { grid-template-columns: 1fr; }
+    .streaming-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .streaming-card:last-child { grid-column: 1 / -1; }
+    .streaming-card { min-height: 140px; padding: 1.5rem 0.8rem; }
+    .profile-layout { grid-template-columns: 1fr; }
+    .profile-visual { position: static; max-width: 340px; }
+    .profile-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .footer-top { align-items: flex-start; flex-direction: column; }
   }
-  @media (max-width: 600px) { .concept-visual { grid-template-columns: 1fr; }
-    .profile-stats { grid-template-columns: 1fr 1fr; } .streaming-grid { grid-template-columns: 1fr 1fr; }
+  @media (max-width: 380px) {
+    .hero-latest .lbl { display: none; }
+    .stz { padding-left: 1rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    .ticker-track { animation: none; }
+    .reveal { opacity: 1; transform: none; }
   }
 </style>
 </head>
 <body>
 
+<div class="progress" id="progress"></div>
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
-<div class="lang-switcher">
-  <button class="lang-btn active" onclick="setLang('ja')">JA</button>
-  <button class="lang-btn" onclick="setLang('en')">EN</button>
-</div>
-
-<nav>
-  <a href="#" class="nav-logo">社畜のめぐみ</a>
+<nav id="nav">
+  <a href="#top" class="nav-logo">社畜のめぐみ</a>
   <ul class="nav-links">
     <li><a href="#news" id="nav-news">お知らせ</a></li>
     <li><a href="#music" id="nav-music">音楽</a></li>
@@ -234,39 +367,73 @@
     <li><a href="#streaming" id="nav-streaming">配信</a></li>
     <li><a href="#profile" id="nav-profile">アーティスト</a></li>
   </ul>
+  <div class="lang-switcher">
+    <button class="lang-btn active" onclick="setLang('ja')" aria-label="日本語">JA</button>
+    <button class="lang-btn" onclick="setLang('en')" aria-label="English">EN</button>
+  </div>
+  <button class="burger" id="burger" aria-label="メニュー" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
 </nav>
 
-<section class="hero">
-  <div class="hero-grid"></div>
-  <div class="particles" id="particles"></div>
+<div class="menu" id="menu">
+  <ul class="menu-list">
+    <li><a href="#news"><i>01</i><span data-nav="navNews">お知らせ</span></a></li>
+    <li><a href="#music"><i>02</i><span data-nav="navMusic">音楽</span></a></li>
+    <li><a href="#lyrics"><i>03</i><span data-nav="navLyrics">歌詞</span></a></li>
+    <li><a href="#concept"><i>04</i><span data-nav="navConcept">世界観</span></a></li>
+    <li><a href="#streaming"><i>05</i><span data-nav="navStreaming">配信</span></a></li>
+    <li><a href="#profile"><i>06</i><span data-nav="navProfile">アーティスト</span></a></li>
+  </ul>
+  <div class="menu-social">
+    <a href="https://www.instagram.com/shachiku_megumi" class="social-link" target="_blank" rel="noopener">Instagram</a>
+    <a href="https://youtube.com/@shachiku_megumi" class="social-link" target="_blank" rel="noopener">YouTube</a>
+    <a href="https://www.tiktok.com/@shachiku_megumi" class="social-link" target="_blank" rel="noopener">TikTok</a>
+  </div>
+</div>
+
+<section class="hero" id="top">
+  <div class="hero-ghost" aria-hidden="true">社畜</div>
   <div class="hero-content">
     <div class="hero-eyebrow">Official Artist Site</div>
-    <h1 class="hero-title"><span class="gold">社畜</span>の<br><span class="purple">めぐみ</span></h1>
+    <h1 class="hero-title" aria-label="社畜のめぐみ">
+      <span class="line"><span><span class="gold">社畜</span>の</span></span>
+      <span class="line"><span class="purple">めぐみ</span></span>
+    </h1>
+    <div class="hero-romaji">Shachiku no Megumin</div>
     <p class="hero-sub" id="hero-sub">AIと音楽と、社畜の叫び。</p>
-    <a href="#music" class="hero-cta" id="hero-cta">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-      <span id="hero-cta-text">音楽を聴く</span>
-    </a>
-    <a href="#concept" class="hero-cta-ghost"><span id="hero-ghost-text">世界観を知る</span></a>
+    <div class="hero-actions">
+      <a href="#music" class="hero-cta" id="hero-cta">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+        <span id="hero-cta-text">音楽を聴く</span>
+      </a>
+      <a href="#concept" class="hero-cta-ghost"><span id="hero-ghost-text">世界観を知る</span></a>
+    </div>
   </div>
-  <div class="hero-scroll-hint"><div class="scroll-line"></div><span>Scroll</span></div>
+  <div class="hero-visual">
+    <div class="hero-vert" id="hero-vert" aria-hidden="true">AIと音楽と、社畜の叫び。</div>
+    <div class="hero-frame"><img src="artist.jpeg" alt="社畜のめぐみ" fetchpriority="high"></div>
+    <div class="seal" aria-hidden="true">社<br>畜</div>
+  </div>
+  <a class="hero-latest" id="heroLatest" href="#news">
+    <span class="dot"></span><span class="lbl">Latest</span><span class="ttl" id="heroLatestTitle"></span><span class="arr" aria-hidden="true">→</span>
+  </a>
 </section>
+
+<div class="ticker" aria-hidden="true"><div class="ticker-track" id="tickerTrack"></div></div>
 
 <section class="news-section" id="news">
   <div class="container">
-    <div class="section-label reveal">News &amp; Topics</div>
-    <h2 class="section-title reveal" id="news-title">お知らせ</h2>
+    <header class="sec-head reveal"><span class="sec-no">01</span><div><div class="section-label">News &amp; Topics</div><h2 class="section-title" id="news-title">お知らせ</h2></div></header>
     <div class="news-list reveal" id="newsList"></div>
+    <button class="btn-line news-more" id="newsMore" hidden></button>
   </div>
 </section>
 
 <section class="mv-section" id="music">
   <div class="container">
-    <div class="section-label reveal">Music Video</div>
-    <h2 class="section-title reveal" id="mv-title">楽曲 & MV</h2>
+    <header class="sec-head reveal"><span class="sec-no">02</span><div><div class="section-label">Music Video</div><h2 class="section-title" id="mv-title">楽曲 &amp; MV</h2></div></header>
     <div class="mv-featured reveal">
-      <div class="mv-placeholder" id="mvMain" style="padding:0;min-height:300px;">
-        <iframe src="https://www.youtube.com/embed/UUj2-r8vYFY" title="焦熱 / Shōnetsu — Scorching Heat" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width:100%;height:100%;border:none;display:block;min-height:300px;"></iframe>
+      <div class="mv-frame" id="mvMain">
+        <iframe src="https://www.youtube.com/embed/UUj2-r8vYFY" title="焦熱 / Shōnetsu — Scorching Heat" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
       </div>
       <div class="mv-info">
         <div>
@@ -279,7 +446,7 @@
           <div class="mv-meta-item"><span>Genre</span>AI Music</div>
           <div class="mv-meta-item"><span id="mv-prod-label">制作</span>AI assisted</div>
         </div>
-        <a href="https://www.youtube.com/channel/UCG_r7ssg8YzBNC6Uz4ONZag/join" class="member-cta" target="_blank" rel="noopener">🔒 <span id="member-cta-label">メンバー限定動画</span></a>
+        <a href="https://www.youtube.com/channel/UCG_r7ssg8YzBNC6Uz4ONZag/join" class="btn-line member-cta" target="_blank" rel="noopener">🔒 <span id="member-cta-label">メンバー限定動画</span></a>
       </div>
     </div>
   </div>
@@ -287,15 +454,27 @@
 
 <section class="lyrics-section" id="lyrics">
   <div class="container">
-    <div class="section-label reveal">Lyrics</div>
-    <h2 class="section-title reveal" id="lyrics-title">歌詞</h2>
-    <div class="lyrics-layout reveal">
-      <div class="lyrics-selector" id="lyricsSelector"></div>
-      <div>
-        <div class="lyrics-song-title" id="lyricsSongTitle">愛とAI</div>
+    <header class="sec-head reveal"><span class="sec-no">03</span><div><div class="section-label">Lyrics</div><h2 class="section-title" id="lyrics-title">歌詞</h2></div></header>
+    <div class="lyrics-selector-wrap reveal" id="lyricsSelectorWrap"><div class="lyrics-selector" id="lyricsSelector" role="tablist"></div></div>
+    <div class="lyrics-layout reveal" id="lyricsLayout">
+      <aside class="lyrics-side">
+        <div class="lyrics-no" id="lyricsNo"></div>
+        <div class="lyrics-song-title" id="lyricsSongTitle"></div>
+        <div class="lyrics-meta-info" id="lyricsMeta"></div>
         <div class="lyrics-player" id="lyricsPlayer"></div>
-        <div class="lyrics-meta-info" id="lyricsMeta">Music & Lyrics: 社畜のめぐみ / AI assisted</div>
-        <div class="lyrics-body" id="lyricsBody"></div>
+        <div class="lyrics-toggles">
+          <span id="lyricsShowLabel">表示</span>
+          <button class="chip" id="tgRo" aria-pressed="true">Romaji</button>
+          <button class="chip" id="tgEn" aria-pressed="true">English</button>
+        </div>
+      </aside>
+      <div class="lyrics-main">
+        <div class="lyrics-body collapsed" id="lyricsBody"></div>
+        <button class="btn-line lyrics-expand" id="lyricsExpand"></button>
+        <div class="lyrics-nav">
+          <button id="lyPrev"><small id="lyPrevLabel">Prev</small><b id="lyPrevTitle"></b></button>
+          <button id="lyNext"><small id="lyNextLabel">Next</small><b id="lyNextTitle"></b></button>
+        </div>
       </div>
     </div>
   </div>
@@ -303,12 +482,11 @@
 
 <section class="concept-section" id="concept">
   <div class="container">
-    <div class="section-label reveal">World & Concept</div>
-    <h2 class="section-title reveal" id="concept-title">世界観</h2>
+    <header class="sec-head reveal"><span class="sec-no">04</span><div><div class="section-label">World &amp; Concept</div><h2 class="section-title" id="concept-title">世界観</h2></div></header>
     <div class="concept-grid reveal">
       <div>
         <blockquote class="concept-quote" id="concept-quote">「AIと共に生き、AIと共に叫ぶ。<br>社畜という名の現代神話。」</blockquote>
-        <p class="concept-body" id="concept-body">社畜のめぐみは、日本のサラリーマン文化（"社畜"）とAIの共存をテーマに、笑いと切なさの狭間を音楽で表現するアーティストです。<br><br>職場のリアル、AIへの依存、人間らしさへの問い——そのすべてが楽曲に宿っています。<br><br>Instagram・YouTube・TikTok を通じて発信し続ける「社畜のめぐみ」ブランドは、AI音楽・AI映像・コンテンツ制作の実験場でもあります。</p>
+        <p class="concept-body" id="concept-body"></p>
       </div>
       <div class="concept-visual">
         <div class="concept-tile"><div class="concept-tile-icon">音</div><span class="concept-tile-strong" id="tile1-strong">AI × 音楽</span><span class="concept-tile-sub" id="tile1-sub">最先端ツールで生み出す独自サウンド</span></div>
@@ -322,30 +500,28 @@
 
 <section class="streaming-section" id="streaming">
   <div class="container">
-    <div class="section-label reveal">Listen Now</div>
-    <h2 class="section-title reveal" id="streaming-title">配信中</h2>
-    <div class="reveal" style="max-width:720px;margin:0 auto 2.5rem;">
-      <iframe style="border-radius:12px;width:100%;height:352px;border:none;display:block;" src="https://open.spotify.com/embed/artist/1hJLUsHKx5cwraOZZAQcHc?utm_source=generator&amp;theme=0" title="Spotify — 社畜のめぐみ" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+    <header class="sec-head reveal"><span class="sec-no">05</span><div><div class="section-label">Listen Now</div><h2 class="section-title" id="streaming-title">配信中</h2></div></header>
+    <div class="streaming-embed reveal">
+      <iframe src="https://open.spotify.com/embed/artist/1hJLUsHKx5cwraOZZAQcHc?utm_source=generator&amp;theme=0" title="Spotify — 社畜のめぐみ" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
     <div class="streaming-grid reveal">
-      <a href="https://open.spotify.com/artist/1hJLUsHKx5cwraOZZAQcHc" target="_blank" class="streaming-card"><img class="streaming-logo" src="spotify.png" alt="Spotify"><div class="streaming-name">Spotify</div><div class="streaming-action" id="s-action1">聴く →</div></a>
-      <a href="https://music.apple.com/jp/artist/%E7%A4%BE%E7%95%9C%E3%81%AE%E3%82%81%E3%81%90%E3%81%BF/1895824534" target="_blank" class="streaming-card"><img class="streaming-logo" src="applemusic.svg" alt="Apple Music"><div class="streaming-name">Apple Music</div><div class="streaming-action" id="s-action2">聴く →</div></a>
-      <a href="https://music.apple.com/jp/artist/megumin2-0/1820172247" target="_blank" class="streaming-card"><img class="streaming-logo" src="applemusic.svg" alt="Apple Music"><div class="streaming-name">Apple Music<br><span style="font-size:0.6rem;color:var(--muted)">Megumin2.0</span></div><div class="streaming-action" id="s-action2b">聴く →</div></a>
-      <a href="https://youtube.com/channel/UCr9rHWuoRggA7NaZPJ-KE3A" target="_blank" class="streaming-card"><img class="streaming-logo" src="youtube.png" alt="YouTube"><div class="streaming-name">YouTube Music</div><div class="streaming-action" id="s-action3">聴く →</div></a>
-      <a href="https://music.amazon.co.jp/artists/B0GYZS65KF" target="_blank" class="streaming-card"><img class="streaming-logo streaming-logo--wide" src="amazonmusic.png" alt="Amazon Music"><div class="streaming-name">Amazon Music</div><div class="streaming-action" id="s-action4">聴く →</div></a>
+      <a href="https://open.spotify.com/artist/1hJLUsHKx5cwraOZZAQcHc" target="_blank" rel="noopener" class="streaming-card"><img class="streaming-logo" src="spotify.png" alt="Spotify" loading="lazy"><div class="streaming-name">Spotify</div><div class="streaming-action" id="s-action1">聴く →</div></a>
+      <a href="https://music.apple.com/jp/artist/%E7%A4%BE%E7%95%9C%E3%81%AE%E3%82%81%E3%81%90%E3%81%BF/1895824534" target="_blank" rel="noopener" class="streaming-card"><img class="streaming-logo" src="applemusic.svg" alt="Apple Music" loading="lazy"><div class="streaming-name">Apple Music</div><div class="streaming-action" id="s-action2">聴く →</div></a>
+      <a href="https://music.apple.com/jp/artist/megumin2-0/1820172247" target="_blank" rel="noopener" class="streaming-card"><img class="streaming-logo" src="applemusic.svg" alt="Apple Music" loading="lazy"><div class="streaming-name">Apple Music<br><span>Megumin2.0</span></div><div class="streaming-action" id="s-action2b">聴く →</div></a>
+      <a href="https://youtube.com/channel/UCr9rHWuoRggA7NaZPJ-KE3A" target="_blank" rel="noopener" class="streaming-card"><img class="streaming-logo" src="youtube.png" alt="YouTube" loading="lazy"><div class="streaming-name">YouTube Music</div><div class="streaming-action" id="s-action3">聴く →</div></a>
+      <a href="https://music.amazon.co.jp/artists/B0GYZS65KF" target="_blank" rel="noopener" class="streaming-card"><img class="streaming-logo streaming-logo--wide" src="amazonmusic.png" alt="Amazon Music" loading="lazy"><div class="streaming-name">Amazon Music</div><div class="streaming-action" id="s-action4">聴く →</div></a>
     </div>
   </div>
 </section>
 
 <section class="profile-section" id="profile">
   <div class="container">
-    <div class="section-label reveal">Artist</div>
-    <h2 class="section-title reveal" id="profile-title">社畜のめぐみとは</h2>
+    <header class="sec-head reveal"><span class="sec-no">06</span><div><div class="section-label">Artist</div><h2 class="section-title" id="profile-title">社畜のめぐみとは</h2></div></header>
     <div class="profile-layout reveal">
       <div class="profile-visual">
         <div class="profile-avatar">
-          <img class="artist-photo" src="artist.jpeg" alt="社畜のめぐみ">
-          <div class="profile-corner"></div>
+          <img class="artist-photo" src="artist.jpeg" alt="社畜のめぐみ" loading="lazy">
+          <div class="seal" aria-hidden="true">社<br>畜</div>
         </div>
         <div class="social-links">
           <a href="https://www.instagram.com/shachiku_megumi" class="social-link" target="_blank" rel="noopener">Instagram</a>
@@ -356,9 +532,9 @@
       <div>
         <h3 class="profile-name">社畜のめぐみ</h3>
         <div class="profile-name-en">Shachiku no Megumin</div>
-        <p class="profile-bio" id="profile-bio">社畜のめぐみは、AIで楽曲とMVを生み出すクリエイター。働くことの息苦しさ、群れに飲まれる怖さ、夜の孤独——誰もが見て見ぬふりをするものを、音楽にして突きつける。<br><br>代表曲「愛とAI」は、AIへの依存と人間らしさを問う作品として注目を集めている。AI音楽・AI映像制作の最前線で実験を続けながら、日々新しい表現を追い求めている。</p>
+        <p class="profile-bio" id="profile-bio"></p>
         <div class="profile-stats">
-          <div class="stat-item"><div class="stat-num" id="stat-count">14</div><div class="stat-label" id="stat-tracks">楽曲</div></div>
+          <div class="stat-item"><div class="stat-num" id="stat-count">16</div><div class="stat-label" id="stat-tracks">楽曲</div></div>
           <div class="stat-item"><div class="stat-num">3</div><div class="stat-label" id="stat-lang">言語</div><div class="stat-sub" id="stat-lang-sub">日 / 英 / Romaji</div></div>
           <div class="stat-item"><div class="stat-num">2025.12</div><div class="stat-label" id="stat-since">始動</div></div>
           <div class="stat-item"><div class="stat-num" id="stat-ai">AI+人</div><div class="stat-label" id="stat-powered">制作</div></div>
@@ -373,12 +549,32 @@
 </section>
 
 <footer>
-  <div class="footer-logo">社畜のめぐみ</div>
-  <div class="footer-copy" id="footer-copy">© 2025–<span id="copy-year">2026</span> 社畜のめぐみ / Shachiku no Megumin. All rights reserved.</div>
+  <div class="footer-top">
+    <div>
+      <div class="footer-logo">社畜のめぐみ</div>
+      <div class="footer-tag" id="footer-tag">AIと音楽と、社畜の叫び。</div>
+    </div>
+    <div class="social-links">
+      <a href="https://www.instagram.com/shachiku_megumi" class="social-link" target="_blank" rel="noopener">Instagram</a>
+      <a href="https://youtube.com/@shachiku_megumi" class="social-link" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://www.tiktok.com/@shachiku_megumi" class="social-link" target="_blank" rel="noopener">TikTok</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy" id="footer-copy">© 2025–<span id="copy-year">2026</span> 社畜のめぐみ / Shachiku no Megumin. All rights reserved.</div>
+    <a class="to-top" href="#top">PAGE TOP ↑</a>
+  </div>
 </footer>
 
+<canvas id="cursorDust"></canvas>
+
 <script>
-// ── i18n ───────────────────────────────────────────────────────
+/* ══════════════════════════════════════════════════════════════
+   データ（お知らせ・歌詞・Spotify）はここから下。
+   ・お知らせを足す   → newsData の先頭に1件追加
+   ・曲を足す         → lyricsData に追加し、spotifyTracks の「同じ位置」にも追加
+                        （位置がずれると別の曲が再生されます）
+   ══════════════════════════════════════════════════════════════ */
 const i18n = {
   ja: {
     navNews:'お知らせ', newsTitle:'お知らせ', newsMore:'詳しく見る →',
@@ -436,17 +632,26 @@ const i18n = {
   }
 };
 
-// Lyrics data
-// News / Topics
+// 追加の画面文言（日英）
+const ui = {
+  ja: { latest:'最新', showAll:'歌詞をすべて表示', collapse:'歌詞を折りたたむ', show:'表示', prev:'前の曲', next:'次の曲',
+        newsOlder:n=>`過去のお知らせを見る（${n}件）`, newsClose:'過去のお知らせを閉じる', menu:'メニュー', singles:'シングル / 主要曲', bsides:'B-Sides' },
+  en: { latest:'Latest', showAll:'Show full lyrics', collapse:'Collapse lyrics', show:'Show', prev:'Previous', next:'Next',
+        newsOlder:n=>`Show older news (${n})`, newsClose:'Hide older news', menu:'Menu', singles:'Singles / Main', bsides:'B-Sides' }
+};
+const NEWS_VISIBLE = 4;   // 最初に見せるお知らせの件数
+
 const newsData = [
   {
     date: '2026.11.11',
-    tag: { ja:'リリース予定', en:'Coming Soon' },
+    tag: { ja:'新曲', en:'New Release' },
     tagClass: 'release',
-    title: { ja:'新曲「非常口」11月11日リリース', en:'New single "Hijōguchi" — out November 11' },
-    desc: { ja:'2026年11月11日、各音楽配信サービスにてリリース予定です。YouTubeで先行公開中。', en:'Coming to all major streaming services on November 11, 2026. Early preview now on YouTube.' },
+    title: { ja:'新曲「非常口」配信開始', en:'New single "Hijōguchi" out now' },
+    desc: { ja:'「非常口」が配信開始。Spotify・Apple Music・YouTubeでお聴きいただけます。', en:'"Hijōguchi" is out now. Listen on Spotify, Apple Music, and YouTube.' },
     links: [
-      { label:{ ja:'YouTube（先行公開）', en:'YouTube (Early Preview)' }, url:'https://youtu.be/MySjgOQmONU' }
+      { label:'Spotify', url:'https://open.spotify.com/album/70SXYJoCfplktwNIV90Zg9' },
+      { label:'Apple Music', url:'https://music.apple.com/jp/album/%E9%9D%9E%E5%B8%B8%E5%8F%A3-single/6831096396' },
+      { label:'YouTube', url:'https://youtu.be/7sm1yMKuHlI' }
     ]
   },
   {
@@ -503,25 +708,6 @@ const newsData = [
   },
 ];
 
-function buildNews() {
-  const list = document.getElementById('newsList');
-  if (!list) return;
-  list.innerHTML = '';
-  newsData.forEach(n => {
-    const el = document.createElement('div');
-    el.className = 'news-item';
-    el.innerHTML = `
-      <div class="news-head">
-        <span class="news-date">${n.date}</span>
-        <span class="news-tag ${n.tagClass}">${n.tag[lang]}</span>
-      </div>
-      <div class="news-item-title">${n.title[lang]}</div>
-      <div class="news-item-desc">${n.desc[lang]}</div>
-      ${n.links ? `<div class="news-links">${n.links.map(l => `<a class="news-link-btn" href="${l.url}" target="_blank" rel="noopener">${typeof l.label === 'object' ? l.label[lang] : l.label}</a>`).join('')}</div>` : ''}`;
-    list.appendChild(el);
-  });
-}
-
 const lyricsData = [
   { title:'社畜', meta:'Music & Lyrics: 社畜のめぐみ / AI assisted', body:`直立　沈黙　整列\nChokuritsu chinmoku seiretsu\nStanding upright, silent, lined in formation\n\n名もない顔が量産列\nNa mo nai kao ga ryōsan retsu\nNameless faces, mass-produced in rows\n\n<span class="chorus">社畜　社畜　首輪はネクタイ\nShachiku shachiku kubiwa wa nekutai\nCorporate slaves, corporate slaves — ties worn like collars\n\n自由は資料の失注みたい\nJiyū wa shiryō no shicchū mitai\nFreedom is like a rejected proposal</span>\n\n定時は都市伝説\nTeiji wa toshi densetsu\nLeaving work on time is an urban myth\n\n笑顔は業務で提出制\nEgao wa gyōmu de teishutsu-sei\nSmiles are mandatory, officially submitted for work\n\n床に落ちた黒い輪郭\nYuka ni ochita kuroi rinkaku\nA black outline falls onto the floor\n\n俺より先に本音が発火\nOre yori saki ni honne ga hakka\nMy true feelings ignite before I do\n\n無音の部屋　踊る影\nMuon no heya odoru kage\nIn a silent room, the shadow dances\n\n本体だけが置き去りで\nHontai dake ga okizari de\nOnly the real body is left behind\n\n守れルール　越えるな線\nMamore rūru koeru na sen\nFollow the rules. Don't cross the line\n\n壊れたのは　どこだっけ\nKowareta no wa doko dakke\nWhat was it that broke, again?\n\n<span class="chorus">社畜　社畜　哀が鳴る\nShachiku shachiku ai ga naru\nCorporate slaves, corporate slaves — sorrow begins to sound\n\n俺は止まり　影が踊る\nOre wa tomari kage ga odoru\nI stand still while my shadow dances\n\n社畜　社畜　疑の群れ\nShachiku shachiku gi no mure\nCorporate slaves, a swarm of doubt\n\n無音の中で　リズムが噛む\nMuon no naka de rizumu ga kamu\nIn the silence, the rhythm grinds and clashes</span>\n\n「代わりはいくらでもいる」\n"Kawari wa ikura demo iru"\n"There are plenty of replacements."\n\n「気合が足りないだけだろ」\n"Kiai ga tarinai dake daro"\n"You're just not trying hard enough."\n\n「結果がすべて　文句は後」\n"Kekka ga subete monku wa ato"\n"Results are everything. Complaints come later."\n\n「自己責任　察しろよ」\n"Jiko sekinin sasshiro yo"\n"It's your responsibility. Figure it out."\n\nその言葉　床に落ち\nSono kotoba yuka ni ochi\nThose words fall to the floor\n\n影が拾って　牙を研ぐ\nKage ga hirotte kiba o togu\nThe shadow picks them up and sharpens its fangs\n\n声は飲み込む　喉の奥\nKoe wa nomikomu nodo no oku\nI swallow my voice deep in my throat\n\n踊るのは　影の方\nOdoru no wa kage no hō\nThe one that dances is the shadow\n\n止まれ\nTomare\nStop\n\n……\n…\n\n止まってるのは　誰だ\nTomatteru no wa dare da\nBut who is the one truly standing still?\n\n<span class="chorus">社畜　社畜　哀が鳴る\nShachiku shachiku ai ga naru\nCorporate slaves, corporate slaves — sorrow resounds\n\n俺は無音で　影が吠える\nOre wa muon de kage ga hoeru\nI am silent while my shadow howls\n\n社畜　社畜　疑のまま\nShachiku shachiku gi no mama\nCorporate slaves, remaining in doubt\n\n俺が俺に　戻るまで\nOre ga ore ni modoru made\nUntil I return to being myself</span>\n\n照明が落ちる\nShōmei ga ochiru\nThe lights go out\n\n影が消える\nKage ga kieru\nThe shadow disappears\n\n直立の俺だけが　残る\nChokuritsu no ore dake ga nokoru\nOnly me remains, standing upright` },
 
@@ -554,7 +740,6 @@ const lyricsData = [
   { title:'余温', album:true, meta:'Music & Lyrics: 社畜のめぐみ / AI assisted', body:`終電逃して 笑ってた\nShūden nogashite waratteta\nWe missed the last train, and laughed\n\nくだらない話で 朝が来た\nKudaranai hanashi de asa ga kita\nMorning came over silly conversations\n\n夢の話も 恥ずかしげもなく\nYume no hanashi mo hazukashige mo naku\nWe even talked about our dreams, unembarrassed\n\n語り合えた あの温度\nKatariaeta ano ondo\nThat warmth where we could say anything\n\n何も持ってなくて 全部あった\nNani mo mottenakute zenbu atta\nWe had nothing, and we had it all\n\n金はなくても 時間はあった\nKane wa nakutemo jikan wa atta\nNo money, but all the time in the world\n\n別れ際は いつも軽く\nWakaregiwa wa itsumo karuku\nOur goodbyes were always light\n\nじゃあまた今度 それで足りた\nJaa mata kondo sore de tarita\n"See you next time" — and that was enough\n\n通知が減った グループチャット\nTsūchi ga hetta gurūpu chatto\nThe group chat notifications faded\n\n最後に会った日 思い出せない\nSaigo ni atta hi omoidasenai\nI can't recall the last day we met\n\n<span class="chorus">また今度 また今度\nMata kondo mata kondo\nNext time, next time\n\n何度でも言えた また今度\nNando demo ieta mata kondo\nWe could say it endlessly — next time\n\n会えるのが 当たり前で\nAeru no ga atarimae de\nMeeting again was a given\n\nあの頃の温度のまま\nAno koro no ondo no mama\nStill at the warmth of those days</span>\n\nあいつは家庭 あいつは遠方\nAitsu wa katei aitsu wa enpō\nOne has a family, one lives far away\n\nそれぞれ抱えた それぞれの日常\nSorezore kakaeta sorezore no nichijō\nEach of us carrying a life of our own\n\n誰が悪いわけでも ないまま\nDare ga warui wake demo nai mama\nWith no one to blame\n\n予定の合わない 大人になった\nYotei no awanai otona ni natta\nWe became adults whose schedules never align\n\n深夜に開く 昔の写真\nShin'ya ni hiraku mukashi no shashin\nLate at night, I open the old photos\n\n若い俺らが まだ笑ってる\nWakai orera ga mada waratteru\nOur younger selves are still laughing\n\n<span class="chorus">また今度 また今度\nMata kondo mata kondo\nNext time, next time\n\n何度目だろう また今度\nNandome darō mata kondo\nHow many times now — "next time"\n\n既読だけ並ぶ画面\nKidoku dake narabu gamen\nA screen lined with nothing but "read"\n\n下がっていく温度\nSagatte iku ondo\nThe warmth keeps slipping away</span>\n\nいつでも会えると 思ってた\nItsudemo aeru to omotteta\nI thought we could meet anytime\n\nいつでもは 来なかった\nItsudemo wa konakatta\n"Anytime" never came\n\n元気かの 一言さえ\nGenki ka no hitokoto sae\nEven a single "how have you been"\n\n打っては消して 夜が更けた\nUtte wa keshite yoru ga fuketa\nTyped and deleted as the night wore on\n\n<span class="chorus">また今度 また今度\nMata kondo mata kondo\nNext time, next time\n\nそれでも言うよ また今度\nSoredemo iu yo mata kondo\nStill, I'll say it — next time\n\n嘘じゃない 願いに似た\nUso ja nai negai ni nita\nIt's not a lie — it's closer to a wish\n\n祈りみたいな また今度\nInori mitai na mata kondo\nA "next time" that sounds like a prayer</span>\n\nまた今度\nMata kondo\nNext time\n\nいつかの言葉\nItsuka no kotoba\nWords from back then\n\nまだ 消せない\nMada kesenai\nI still can't delete them` },
 ];
 
-// Track names (ja/en)
 const spotifyTracks = [
   '0IjiQGzgaRv7nb2KcRMPI9', // 01 社畜
   '2txipaic1EeUf9PTF0jOSx', // 02 逼迫
@@ -573,255 +758,322 @@ const spotifyTracks = [
   '3qZXAszHWzWFrE2HkLJNTn', // 15 上機嫌
   '3YpkTr78ll8sm8nqNMoLkF', // 16 余温
 ];
-// 最初の8曲がメイン曲、9曲目以降がアルバムのみ収録
-const ALBUM_ONLY_START = 8;
 
+/* ══════════════════════════════════════════════════════════════
+   ここから下は表示のしくみ（ふだんは触らなくて大丈夫）
+   ══════════════════════════════════════════════════════════════ */
 let lang = 'ja';
 let currentTrack = 0;
+let newsExpanded = false;
+let lyricsExpanded = false;
+let playerTrack = -1;
+const $ = id => document.getElementById(id);
+const pad2 = n => String(n).padStart(2, '0');
 
 function setLang(l) {
   lang = l;
   document.documentElement.lang = l;
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent === l.toUpperCase()));
-  const t = i18n[l];
+  const t = i18n[l], u = ui[l], EN = l === 'en';
+  const setT = (id, v) => { const e = $(id); if (e) e.textContent = v; };
+  const setH = (id, v) => { const e = $(id); if (e) e.innerHTML = v; };
   // Nav
-  const nn = document.getElementById('nav-news');
-  if (nn) nn.textContent = t.navNews;
-  const nt = document.getElementById('news-title');
-  if (nt) nt.textContent = t.newsTitle;
-  buildNews();
-  const EN = l === 'en';
-  const setT = (id, ja, en) => { const e = document.getElementById(id); if (e) e.textContent = EN ? en : ja; };
-  setT('mv-song-title', '焦熱', 'Shōnetsu');
-  setT('member-cta-label', 'メンバー限定動画', 'Members-Only Videos');
-  setT('stat-ai', 'AI+人', 'AI+Human');
-  setT('tag-hyakki', '百鬼夜行', 'Hyakki Yagyō');
-  setT('tag-aihuman', 'AI×人間', 'AI×Human');
-  document.getElementById('nav-music').textContent = t.navMusic;
-  document.getElementById('nav-lyrics').textContent = t.navLyrics;
-  document.getElementById('nav-concept').textContent = t.navConcept;
-  document.getElementById('nav-streaming').textContent = t.navStreaming;
-  document.getElementById('nav-profile').textContent = t.navProfile;
+  setT('nav-news', t.navNews); setT('nav-music', t.navMusic); setT('nav-lyrics', t.navLyrics);
+  setT('nav-concept', t.navConcept); setT('nav-streaming', t.navStreaming); setT('nav-profile', t.navProfile);
+  document.querySelectorAll('[data-nav]').forEach(e => { e.textContent = t[e.dataset.nav]; });
+  $('burger').setAttribute('aria-label', u.menu);
   // Hero
-  document.getElementById('hero-sub').textContent = t.heroSub;
-  document.getElementById('hero-cta-text').textContent = t.heroCta;
-  document.getElementById('hero-ghost-text').textContent = t.heroGhost;
+  setT('hero-sub', t.heroSub); setT('hero-vert', t.heroSub); setT('footer-tag', t.heroSub);
+  setT('hero-cta-text', t.heroCta); setT('hero-ghost-text', t.heroGhost);
+  // News
+  setT('news-title', t.newsTitle);
+  buildNews();
   // MV
-  document.getElementById('mv-title').textContent = t.mvTitle;
-  document.getElementById('mv-tag').textContent = t.mvTag;
-  document.getElementById('mv-desc').textContent = t.mvDesc;
-  document.getElementById('mv-release-label').textContent = t.mvReleaseLabel;
-  document.getElementById('mv-prod-label').textContent = t.mvProdLabel;
+  setT('mv-title', t.mvTitle); setT('mv-tag', t.mvTag); setT('mv-desc', t.mvDesc);
+  setT('mv-release-label', t.mvReleaseLabel); setT('mv-prod-label', t.mvProdLabel);
+  setT('mv-song-title', EN ? 'Shōnetsu' : '焦熱');
+  setT('member-cta-label', EN ? 'Members-Only Videos' : 'メンバー限定動画');
   // Lyrics
-  document.getElementById('lyrics-title').textContent = t.lyricsTitle;
+  setT('lyrics-title', t.lyricsTitle); setT('lyricsShowLabel', u.show);
+  setT('lyPrevLabel', '← ' + u.prev); setT('lyNextLabel', u.next + ' →');
   // Concept
-  document.getElementById('concept-title').textContent = t.conceptTitle;
-  document.getElementById('concept-quote').innerHTML = t.conceptQuote;
-  document.getElementById('concept-body').innerHTML = t.conceptBody;
-  document.getElementById('tile1-strong').textContent = t.tile1s;
-  document.getElementById('tile1-sub').textContent = t.tile1b;
-  document.getElementById('tile2-strong').textContent = t.tile2s;
-  document.getElementById('tile2-sub').textContent = t.tile2b;
-  document.getElementById('tile3-strong').textContent = t.tile3s;
-  document.getElementById('tile3-sub').textContent = t.tile3b;
-  document.getElementById('tile4-strong').textContent = t.tile4s;
-  document.getElementById('tile4-sub').textContent = t.tile4b;
+  setT('concept-title', t.conceptTitle); setH('concept-quote', t.conceptQuote); setH('concept-body', t.conceptBody);
+  setT('tile1-strong', t.tile1s); setT('tile1-sub', t.tile1b); setT('tile2-strong', t.tile2s); setT('tile2-sub', t.tile2b);
+  setT('tile3-strong', t.tile3s); setT('tile3-sub', t.tile3b); setT('tile4-strong', t.tile4s); setT('tile4-sub', t.tile4b);
   // Streaming
-  document.getElementById('streaming-title').textContent = t.streamingTitle;
-  ['s-action1','s-action2','s-action2b','s-action3','s-action4'].forEach(id => { const el = document.getElementById(id); if(el) el.textContent = t.streamAction; });
-  // Signup
+  setT('streaming-title', t.streamingTitle);
+  ['s-action1','s-action2','s-action2b','s-action3','s-action4'].forEach(id => setT(id, t.streamAction));
   // Profile
-  document.getElementById('profile-title').textContent = t.profileTitle;
-  document.getElementById('profile-bio').innerHTML = t.profileBio;
-  document.getElementById('stat-tracks').textContent = t.statTracks;
-  document.getElementById('stat-lang').textContent = t.statLang;
-  document.getElementById('stat-lang-sub').textContent = t.statLangSub;
-  document.getElementById('stat-since').textContent = t.statSince;
-  document.getElementById('stat-powered').textContent = t.statPowered;
-  // Rebuild lyrics
+  setT('profile-title', t.profileTitle); setH('profile-bio', t.profileBio);
+  setT('stat-tracks', t.statTracks); setT('stat-lang', t.statLang); setT('stat-lang-sub', t.statLangSub);
+  setT('stat-since', t.statSince); setT('stat-powered', t.statPowered);
+  setT('stat-ai', EN ? 'AI+Human' : 'AI+人');
+  setT('tag-hyakki', EN ? 'Hyakki Yagyō' : '百鬼夜行');
+  setT('tag-aihuman', EN ? 'AI×Human' : 'AI×人間');
+  // Lyrics
   buildLyrics();
   showLyrics(currentTrack);
 }
 
-// Track grid - main tracks + album-only
+/* ── お知らせ ── */
+function buildNews() {
+  const list = $('newsList');
+  list.innerHTML = '';
+  newsData.forEach((n, i) => {
+    const el = document.createElement('article');
+    el.className = 'news-item' + (i >= NEWS_VISIBLE ? ' is-old' : '');
+    el.innerHTML = `
+      <div class="news-head">
+        <span class="news-date">${n.date}</span>
+        <span class="news-tag ${n.tagClass || ''}">${n.tag[lang]}</span>
+      </div>
+      <div>
+        <div class="news-item-title">${n.title[lang]}</div>
+        <div class="news-item-desc">${n.desc[lang]}</div>
+        ${n.links ? `<div class="news-links">${n.links.map(l => `<a class="news-link-btn" href="${l.url}" target="_blank" rel="noopener">${typeof l.label === 'object' ? l.label[lang] : l.label}</a>`).join('')}</div>` : ''}
+      </div>`;
+    list.appendChild(el);
+  });
+  list.classList.toggle('show-all', newsExpanded);
+  const more = $('newsMore'), rest = newsData.length - NEWS_VISIBLE;
+  more.hidden = rest <= 0;
+  more.textContent = newsExpanded ? ui[lang].newsClose : ui[lang].newsOlder(rest);
+  // ヒーロー下の「最新」
+  const top = newsData[0];
+  if (top) { $('heroLatestTitle').textContent = top.title[lang]; $('heroLatest').querySelector('.lbl').textContent = ui[lang].latest; }
+}
+$('newsMore').addEventListener('click', () => { newsExpanded = !newsExpanded; buildNews(); });
 
+/* ── 歌詞 ── */
+// 「日本語／ローマ字／英訳」の3行セットを、読みやすい段に組み直す
+function renderLyrics(body) {
+  let inChorus = false;
+  return body.split(/\n\s*\n/).map(block => {
+    const opens = block.includes('<span class="chorus">'), closes = block.includes('</span>');
+    const isChorus = inChorus || opens;
+    const cls = ['stz'];
+    if (isChorus) cls.push('chorus');
+    if (opens) cls.push('chorus-start');
+    if (closes) cls.push('chorus-end');
+    if (opens) inChorus = true;
+    if (closes) inChorus = false;
+    let lines = block.replace(/<\/?span[^>]*>/g, '').split('\n').map(s => s.trim()).filter(Boolean);
+    if (!lines.length) return '';
+    lines = lines.filter((s, i) => lines.indexOf(s) === i);            // 同じ行の重複はまとめる
+    const html = lines.length === 3
+      ? `<p class="l-ja">${lines[0]}</p><p class="l-ro">${lines[1]}</p><p class="l-en">${lines[2]}</p>`
+      : lines.map(s => `<p class="l-ja">${s}</p>`).join('');
+    return `<div class="${cls.join(' ')}">${html}</div>`;
+  }).join('');
+}
 
-
-// Lyrics tabs
-let userPickedTrack = false;
 function buildLyrics() {
-  const sel = document.getElementById('lyricsSelector');
+  const sel = $('lyricsSelector');
   sel.innerHTML = '';
-
-  const mainLabel = lang === 'ja' ? 'シングル / 主要曲' : 'Singles / Main';
-  const albumLabel = lang === 'ja' ? 'B-Sides' : 'B-Sides';
-
   let lastWasAlbum = null;
   lyricsData.forEach((t, i) => {
     const isAlbum = !!t.album;
-    // グループ見出しを挿入
     if (lastWasAlbum !== isAlbum) {
       const lbl = document.createElement('div');
       lbl.className = 'lyrics-group-label' + (isAlbum ? ' album' : '');
-      lbl.textContent = isAlbum ? albumLabel : mainLabel;
+      lbl.textContent = isAlbum ? ui[lang].bsides : ui[lang].singles;
       sel.appendChild(lbl);
       lastWasAlbum = isAlbum;
     }
-    const div = document.createElement('div');
-    div.className = 'lyrics-tab' + (i === currentTrack ? ' active' : '') + (isAlbum ? ' album' : '');
-    div.innerHTML = `${t.title} <div class="tab-dot"></div>`;
-    div.onclick = () => { currentTrack = i; userPickedTrack = true; buildLyrics(); showLyrics(i); };
-    sel.appendChild(div);
+    const b = document.createElement('button');
+    b.className = 'lyrics-tab' + (i === currentTrack ? ' active' : '') + (isAlbum ? ' album' : '');
+    b.setAttribute('role', 'tab');
+    b.setAttribute('aria-selected', i === currentTrack ? 'true' : 'false');
+    b.innerHTML = `<i>${pad2(i + 1)}</i>${t.title}`;
+    b.onclick = () => selectTrack(i, false);
+    sel.appendChild(b);
   });
-  const act = sel.querySelector('.lyrics-tab.active');
-  if (act && userPickedTrack) act.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+  updateSelectorFade();
+}
+
+function selectTrack(i, scrollToTop) {
+  currentTrack = (i + lyricsData.length) % lyricsData.length;
+  lyricsExpanded = false;
+  document.querySelectorAll('.lyrics-tab').forEach((b, k) => {
+    b.classList.toggle('active', k === currentTrack);
+    b.setAttribute('aria-selected', k === currentTrack ? 'true' : 'false');
+  });
+  showLyrics(currentTrack);
+  const act = document.querySelector('.lyrics-tab.active'), sel = $('lyricsSelector');
+  if (act) sel.scrollTo({ left: act.offsetLeft - (sel.clientWidth - act.offsetWidth) / 2, behavior: 'smooth' });
+  if (scrollToTop) $('lyricsSelectorWrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 function showLyrics(idx) {
-  const pl = document.getElementById('lyricsPlayer');
-  const sid = spotifyTracks[idx];
-  const skind = sid && sid.startsWith('album:') ? 'album' : 'track';
-  const sval = sid && sid.startsWith('album:') ? sid.slice(6) : sid;
-  pl.innerHTML = sid ? `<iframe src="https://open.spotify.com/embed/${skind}/${sval}?utm_source=generator&theme=0" style="width:100%;max-width:560px;height:152px;border:none;border-radius:12px;display:block;" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Spotify player"></iframe>` : '';
   const t = lyricsData[idx] || lyricsData[0];
-  document.getElementById('lyricsSongTitle').textContent = t.title;
-  document.getElementById('lyricsMeta').textContent = lang === 'en' ? t.meta.replace('社畜のめぐみ','Shachiku no Megumin') : t.meta;
-  document.getElementById('lyricsBody').innerHTML = t.body;
+  const n = lyricsData.length;
+  if (playerTrack !== idx) {            // 言語を切り替えても再生が止まらないよう、曲が変わった時だけ作り直す
+    const sid = spotifyTracks[idx];
+    const kind = sid && sid.startsWith('album:') ? 'album' : 'track';
+    const val = sid && sid.startsWith('album:') ? sid.slice(6) : sid;
+    $('lyricsPlayer').innerHTML = sid ? `<iframe src="https://open.spotify.com/embed/${kind}/${val}?utm_source=generator&theme=0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" title="Spotify player"></iframe>` : '';
+    playerTrack = idx;
+  }
+  $('lyricsNo').textContent = `${pad2(idx + 1)} / ${pad2(n)}` + (t.album ? '  ·  B-SIDE' : '');
+  $('lyricsSongTitle').textContent = t.title;
+  $('lyricsMeta').textContent = lang === 'en' ? t.meta.replace('社畜のめぐみ', 'Shachiku no Megumin') : t.meta;
+  const body = $('lyricsBody');
+  body.innerHTML = renderLyrics(t.body);
+  $('lyPrevTitle').textContent = lyricsData[(idx - 1 + n) % n].title;
+  $('lyNextTitle').textContent = lyricsData[(idx + 1) % n].title;
+  applyLyricsCollapse();
 }
 
-// Cursor
-const cursor = document.getElementById('cursor');
-const ring = document.getElementById('cursorRing');
-let mx=0, my=0, rx=0, ry=0;
-document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
-(function animateCursor() {
-  cursor.style.transform = `translate(${mx-6}px,${my-6}px)`;
-  rx += (mx-rx)*0.12; ry += (my-ry)*0.12;
-  ring.style.transform = `translate(${rx-18}px,${ry-18}px)`;
-  requestAnimationFrame(animateCursor);
+function applyLyricsCollapse() {
+  const body = $('lyricsBody'), btn = $('lyricsExpand');
+  body.classList.toggle('collapsed', !lyricsExpanded);
+  btn.textContent = lyricsExpanded ? ui[lang].collapse + ' ↑' : ui[lang].showAll + ' ↓';
+  // 短い歌詞ならボタンは出さない
+  body.classList.remove('collapsed');
+  const full = body.scrollHeight;
+  if (!lyricsExpanded) body.classList.add('collapsed');
+  const limit = body.classList.contains('collapsed') ? body.clientHeight : 0;
+  const needs = lyricsExpanded || full > limit + 40;
+  btn.hidden = !needs;
+  if (!needs) body.classList.remove('collapsed');
+}
+$('lyricsExpand').addEventListener('click', () => {
+  lyricsExpanded = !lyricsExpanded;
+  applyLyricsCollapse();
+  if (!lyricsExpanded) $('lyricsLayout').scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+$('lyPrev').addEventListener('click', () => selectTrack(currentTrack - 1, true));
+$('lyNext').addEventListener('click', () => selectTrack(currentTrack + 1, true));
+[['tgRo', 'hide-ro'], ['tgEn', 'hide-en']].forEach(([id, cls]) => {
+  $(id).addEventListener('click', e => {
+    const on = e.currentTarget.getAttribute('aria-pressed') !== 'true';
+    e.currentTarget.setAttribute('aria-pressed', on);
+    $('lyricsBody').classList.toggle(cls, !on);
+    applyLyricsCollapse();
+  });
+});
+function updateSelectorFade() {
+  const s = $('lyricsSelector'), w = $('lyricsSelectorWrap');
+  w.classList.toggle('fade-l', s.scrollLeft > 8);
+  w.classList.toggle('fade-r', s.scrollLeft < s.scrollWidth - s.clientWidth - 8);
+}
+$('lyricsSelector').addEventListener('scroll', updateSelectorFade, { passive: true });
+addEventListener('resize', () => { updateSelectorFade(); applyLyricsCollapse(); });
+
+/* ── 曲名が流れる帯 ── */
+(function () {
+  const group = '<div class="ticker-group">' + lyricsData.map(t => `<span class="ticker-item">${t.title}</span>`).join('') + '</div>';
+  $('tickerTrack').innerHTML = group + group;
 })();
 
-// Particles
-const pc = document.getElementById('particles');
-for (let i=0; i<20; i++) {
-  const p = document.createElement('div');
-  p.className = 'particle';
-  p.style.left = Math.random()*100+'%';
-  p.style.animationDuration = (8+Math.random()*12)+'s';
-  p.style.animationDelay = (Math.random()*15)+'s';
-  p.style.width = p.style.height = (1+Math.random()*2)+'px';
-  if (Math.random()>0.6) p.style.background = 'var(--accent2)';
-  pc.appendChild(p);
-}
+/* ── メニュー（スマホ） ── */
+(function () {
+  const burger = $('burger');
+  const close = () => { document.body.classList.remove('menu-open'); burger.setAttribute('aria-expanded', 'false'); };
+  burger.addEventListener('click', () => {
+    const open = document.body.classList.toggle('menu-open');
+    burger.setAttribute('aria-expanded', open);
+  });
+  $('menu').querySelectorAll('a').forEach(a => a.addEventListener('click', close));
+  addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+  addEventListener('resize', () => { if (innerWidth > 900) close(); });
+})();
 
-// Reveal
-const obs = new IntersectionObserver(entries => {
-  entries.forEach((e,i) => { if(e.isIntersecting) setTimeout(()=>e.target.classList.add('visible'),i*80); });
-}, { threshold: 0.1 });
-document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+/* ── スクロール連動（進行バー・ナビの背景・現在地） ── */
+(function () {
+  const nav = $('nav'), bar = $('progress'), dust = $('cursorDust');
+  let ticking = false;
+  function onScroll() {
+    const y = scrollY, max = document.documentElement.scrollHeight - innerHeight;
+    nav.classList.toggle('scrolled', y > 24);
+    bar.style.transform = `scaleX(${max > 0 ? Math.min(1, y / max) : 0})`;
+    dust.style.opacity = y > innerHeight * 0.7 ? 0.35 : 1;   // 本文の上では光の粒を控えめに
+    ticking = false;
+  }
+  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+  onScroll();
 
-// YouTube
-function loadVideo(id, videoId) {
-  if (videoId === 'VIDEO_ID_1') { alert(i18n[lang].alertVideo); return; }
-  const c = document.getElementById(id);
-  const f = document.createElement('iframe');
-  f.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-  f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-  f.allowFullscreen = true;
-  f.style.cssText = 'width:100%;height:100%;border:none;display:block;min-height:300px;';
-  c.innerHTML = ''; c.appendChild(f);
-}
+  const links = [...document.querySelectorAll('.nav-links a')];
+  const spy = new IntersectionObserver(es => {
+    es.forEach(e => { if (e.isIntersecting) links.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id)); });
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  document.querySelectorAll('section[id]').forEach(s => spy.observe(s));
 
-// Init
-buildNews();
-buildLyrics();
-showLyrics(0);
-// 楽曲数は歌詞データから自動計算（新曲追加時に手動更新不要）
-document.getElementById('stat-count').textContent = lyricsData.length;
+  const obs = new IntersectionObserver(es => {
+    es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.08, rootMargin: '0px 0px -6% 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+})();
 
-// 著作権年の自動更新（2025年始動、翌年以降は現在年まで表示）
-(function(){
-  const y = new Date().getFullYear();
-  const el = document.getElementById('copy-year');
+/* ── カーソル（マウスのある端末だけ） ── */
+(function () {
+  if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  const cursor = $('cursor'), ring = $('cursorRing');
+  let mx = -100, my = -100, rx = -100, ry = -100;
+  addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; }, { passive: true });
+  document.addEventListener('mouseover', e => { ring.classList.toggle('is-hover', !!e.target.closest('a, button')); });
+  (function loop() {
+    cursor.style.transform = `translate(${mx - 5}px,${my - 5}px)`;
+    rx += (mx - rx) * 0.14; ry += (my - ry) * 0.14;
+    ring.style.transform = `translate(${rx - 18}px,${ry - 18}px)`;
+    requestAnimationFrame(loop);
+  })();
+})();
+
+/* ── 初期表示 ── */
+setLang('ja');
+$('stat-count').textContent = lyricsData.length;   // 楽曲数は歌詞データから自動計算
+(function () {                                        // 著作権年の自動更新
+  const y = new Date().getFullYear(), el = $('copy-year');
   if (el && y >= 2026) el.textContent = y;
-  if (el && y <= 2025) el.parentNode.childNodes[0].textContent = '© 2025';
 })();
 </script>
-<canvas id="cursorDust" style="position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:9000;"></canvas>
+
 <script>
-(function(){
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const cv = document.getElementById('cursorDust');
-  const ctx = cv.getContext('2d');
+/* 光の粒（カーソルや指に引き寄せられる） */
+(function () {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const cv = document.getElementById('cursorDust'), ctx = cv.getContext('2d');
   let W, H, dpr;
-  function resize(){
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    W = cv.width = innerWidth * dpr;
-    H = cv.height = innerHeight * dpr;
-  }
+  function resize() { dpr = Math.min(devicePixelRatio || 1, 2); W = cv.width = innerWidth * dpr; H = cv.height = innerHeight * dpr; }
   resize(); addEventListener('resize', resize);
-
-  const GOLD = [200,169,110];    // #c8a96e
-  const VIOLET = [138,123,216];  // 紫
-
-  const mouse = { x: innerWidth/2, y: innerHeight/2, active: false };
-  addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; mouse.active = true; }, {passive:true});
-  addEventListener('touchmove', e => { const t=e.touches[0]; if(t){ mouse.x=t.clientX; mouse.y=t.clientY; mouse.active=true; } }, {passive:true});
-  addEventListener('touchend', () => { mouse.active = false; }, {passive:true});
-  addEventListener('mouseleave', () => { mouse.active = false; }, {passive:true});
-
-  const N = 110;
+  const GOLD = [200,169,110], VIOLET = [154,130,224];
+  const mouse = { x: innerWidth / 2, y: innerHeight / 2, active: false };
+  addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; mouse.active = true; }, { passive: true });
+  addEventListener('touchmove', e => { const t = e.touches[0]; if (t) { mouse.x = t.clientX; mouse.y = t.clientY; mouse.active = true; } }, { passive: true });
+  addEventListener('touchend', () => { mouse.active = false; }, { passive: true });
+  document.addEventListener('mouseleave', () => { mouse.active = false; });
+  const N = innerWidth < 700 ? 34 : 80;      // スマホでは数を減らして読みやすく・軽く
   const parts = [];
-  function spawn(p){
-    p.x = Math.random()*innerWidth;
-    p.y = Math.random()*innerHeight;
-    p.vx = (Math.random()-.5)*.3;
-    p.vy = (Math.random()-.5)*.3;
-    p.r = .6 + Math.random()*1.6;
-    p.c = Math.random() < .55 ? GOLD : VIOLET;
-    p.tw = Math.random()*Math.PI*2;   // twinkle phase
-    p.sp = .01 + Math.random()*.02;   // twinkle speed
-    return p;
-  }
-  for(let i=0;i<N;i++) parts.push(spawn({}));
-
-  function step(){
-    ctx.clearRect(0,0,W,H);
+  for (let i = 0; i < N; i++) parts.push({
+    x: Math.random() * innerWidth, y: Math.random() * innerHeight, vx: 0, vy: 0,
+    r: .6 + Math.random() * 1.5, c: Math.random() < .55 ? GOLD : VIOLET,
+    tw: Math.random() * Math.PI * 2, sp: .008 + Math.random() * .016
+  });
+  let running = true;
+  document.addEventListener('visibilitychange', () => { running = !document.hidden; if (running) requestAnimationFrame(step); });
+  function step() {
+    if (!running) return;
+    ctx.clearRect(0, 0, W, H);
     ctx.globalCompositeOperation = 'lighter';
-    for(const p of parts){
-      // 引き寄せ：カーソル半径220px内で距離に応じて加速
-      if (mouse.active){
-        const dx = mouse.x - p.x, dy = mouse.y - p.y;
-        const d = Math.hypot(dx,dy);
-        if (d < 220 && d > 0.001){
-          const f = (1 - d/220) * .55;
-          p.vx += dx/d * f;
-          p.vy += dy/d * f;
-        }
+    for (const p of parts) {
+      if (mouse.active) {
+        const dx = mouse.x - p.x, dy = mouse.y - p.y, d = Math.hypot(dx, dy);
+        if (d < 220 && d > .001) { const f = (1 - d / 220) * .5; p.vx += dx / d * f; p.vy += dy / d * f; }
       }
-      // 慣性と減衰
       p.vx *= .92; p.vy *= .92;
-      p.x += p.vx; p.y += p.vy;
-      // 緩やかな漂い
-      p.x += Math.sin(p.tw)*.15;
-      p.y += Math.cos(p.tw*1.3)*.12;
+      p.x += p.vx + Math.sin(p.tw) * .15;
+      p.y += p.vy + Math.cos(p.tw * 1.3) * .12 - .05;
       p.tw += p.sp;
-      // 画面外は反対側へ
-      if (p.x < -10) p.x = innerWidth+10;
-      if (p.x > innerWidth+10) p.x = -10;
-      if (p.y < -10) p.y = innerHeight+10;
-      if (p.y > innerHeight+10) p.y = -10;
-
-      const a = .25 + .55 * (0.5 + 0.5*Math.sin(p.tw*2));
-      const [r,g,b] = p.c;
-      const x = p.x*dpr, y = p.y*dpr, rad = p.r*dpr;
-      const grad = ctx.createRadialGradient(x,y,0,x,y,rad*4);
+      if (p.x < -10) p.x = innerWidth + 10; if (p.x > innerWidth + 10) p.x = -10;
+      if (p.y < -10) p.y = innerHeight + 10; if (p.y > innerHeight + 10) p.y = -10;
+      const a = .18 + .42 * (.5 + .5 * Math.sin(p.tw * 2));
+      const [r, g, b] = p.c, x = p.x * dpr, y = p.y * dpr, rad = p.r * dpr * 4;
+      const grad = ctx.createRadialGradient(x, y, 0, x, y, rad);
       grad.addColorStop(0, `rgba(${r},${g},${b},${a})`);
       grad.addColorStop(1, `rgba(${r},${g},${b},0)`);
       ctx.fillStyle = grad;
-      ctx.beginPath();
-      ctx.arc(x,y,rad*4,0,Math.PI*2);
-      ctx.fill();
+      ctx.beginPath(); ctx.arc(x, y, rad, 0, Math.PI * 2); ctx.fill();
     }
     requestAnimationFrame(step);
   }
